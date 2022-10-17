@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
-
+#include "EPProject.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -13,4 +13,5 @@ public:
 
 private:
     Ui::MainWindowClass ui;
+    EPProject* m_openedProject;
 };

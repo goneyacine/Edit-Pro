@@ -64,7 +64,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\opencv\build\x64\vc15\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies);$(Qt_LIBS_);opencv_world460.lib;opencv_world460d.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(Qt_LIBS_);opencv_world460d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -97,6 +97,7 @@
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="MainWindow.ui" />
     <QtMoc Include="MainWindow.h" />
+    <ClCompile Include="EPProject.cpp" />
     <ClCompile Include="ImageViewer.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
@@ -104,6 +105,7 @@
     <ResourceCompile Include="EditPro.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EPProject.h" />
     <ClInclude Include="ImageViewer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

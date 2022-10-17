@@ -8,11 +8,10 @@ class ImageViewer
 {
 
 public :
-	ImageViewer(cv::Mat p_img);
+	ImageViewer(cv::Mat* p_img);
 	~ImageViewer();
 	QLabel* getQLabel();
-	void updateImage(cv::Mat p_img);
+	void updateImage(cv::Mat* p_img);
 private :
-
 	QLabel* m_label;
 };

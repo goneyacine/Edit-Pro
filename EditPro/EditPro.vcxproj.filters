@@ -52,6 +52,9 @@
     <ClCompile Include="ImageViewer.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="EPProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -61,6 +64,9 @@
   <ItemGroup>
     <ClInclude Include="ImageViewer.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EPProject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

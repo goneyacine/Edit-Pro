@@ -7,14 +7,16 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+    ImageViewer* imageViewer = new ImageViewer(NULL);
 
-    ImageViewer* imageViewer = new ImageViewer(cv::Mat(500, 500, CV_8UC3));
-
-    imageViewer->getQLabel()->setText("");
-    imageViewer->getQLabel()->setPixmap(QPixmap("C:\\Users\\TMAX27\\Pictures\\Camera Roll\\WIN_20220922_19_19_08_Pro.jpg"));
 
     ui.tab->layout()->addWidget(imageViewer->getQLabel());
+    cv::Mat img = cv::imread("C:\\Users\\TMAX27\\Pictures\\Camera Roll\\WIN_20221001_09_49_12_Pro.jpg", cv::IMREAD_COLOR);
 
+
+    m_openedProject = new EPProject(imageViewer, img);
+    m_openedProject->setSaturation(10);
+    m_openedProject->render();
 }
 
 MainWindow::~MainWindow()
