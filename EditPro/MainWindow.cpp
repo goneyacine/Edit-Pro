@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "ImageViewer.h"
 
-
+#include <qslider.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,13 +15,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     m_openedProject = new EPProject(imageViewer, img);
+    m_openedProject->render();
 
-    //TODO : the set saturation needs to be fixed 
-    
-    //m_openedProject->setSaturation(10);
-   //m_openedProject->render();
+    connect(ui.saturation_slider, &QSlider::valueChanged, this, &MainWindow::changeSaturation);
 }
 
 MainWindow::~MainWindow()
 {}
+
+void MainWindow::changeSaturation(int p_saturation)
+{
+    m_openedProject->setSaturation(p_saturation);
+}
 

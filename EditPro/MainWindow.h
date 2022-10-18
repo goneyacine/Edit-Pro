@@ -10,7 +10,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+public slots:
+    void changeSaturation(int p_saturation);
 private:
     Ui::MainWindowClass ui;
     EPProject* m_openedProject;

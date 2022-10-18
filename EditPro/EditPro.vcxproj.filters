@@ -55,6 +55,9 @@
     <ClCompile Include="EPProject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColorConvension.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="EPProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorConvension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -97,6 +97,7 @@
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="MainWindow.ui" />
     <QtMoc Include="MainWindow.h" />
+    <ClCompile Include="ColorConvension.cpp" />
     <ClCompile Include="EPProject.cpp" />
     <ClCompile Include="ImageViewer.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -105,6 +106,7 @@
     <ResourceCompile Include="EditPro.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColorConvension.h" />
     <ClInclude Include="EPProject.h" />
     <ClInclude Include="ImageViewer.h" />
   </ItemGroup>

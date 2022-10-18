@@ -29,6 +29,6 @@ private :
 	cv::Mat m_renderedImage;
 	//NOTE : opencv range for saturation is from 0 to 255 and our range is from 0 to 100 
 	//so the value of saturation should be normalized in the render function to match opencv's range
-	int m_saturation;
+	int m_saturation = 50;
 
 };

@@ -1,5 +1,5 @@
 #include "EPProject.h"
-
+#include "ColorConvension.h"
 
 EPProject::EPProject(ImageViewer* p_imageViewer,cv::Mat p_baseImage) : m_imageViewer(p_imageViewer),m_baseImage(p_baseImage)
 {
@@ -35,7 +35,9 @@ ImageViewer* EPProject::getImageViewer()
 
 void EPProject::render()
 {
+	m_renderedImage = m_baseImage.clone();
 	updateSaturation();
+	m_imageViewer->updateImage(&m_renderedImage);
 }
 
 
@@ -49,23 +51,35 @@ void EPProject::updateSaturation()
 		m_saturation = 100;
 
 
-	int cvSaturation = ((float)m_saturation / 100 * 255);
 
-	cv::Mat updatedImage;
+	float h, s, v,r,g,b;
+	
 
-	cv::cvtColor(m_baseImage, updatedImage, cv::COLOR_BGR2HSV);
-
-	for (int x = 0; x < updatedImage.rows; x++)
+	for (int x = 0; x < m_renderedImage.rows; x++)
 	{
-		for (int y = 0; y < updatedImage.cols; y++)
+		for (int y = 0; y < m_renderedImage.cols; y++)
 		{
-			updatedImage.at < cv::Vec3b >(x, y)[1] = cvSaturation;
+
+			b = m_renderedImage.at < cv::Vec3b >(x, y)[0];
+			g = m_renderedImage.at < cv::Vec3b >(x, y)[1];
+			r = m_renderedImage.at < cv::Vec3b >(x, y)[2];
+
+			colorConvension::RGB2HSV(r, g, b, h, s, v);
+
+			if (s * ((float)m_saturation / 50) > 1)
+				continue;
+
+			colorConvension::HSV2RGB(r, g, b, h, s * ((float)m_saturation / 50), v);
+
+			m_renderedImage.at < cv::Vec3b >(x, y)[0] = b;
+			m_renderedImage.at < cv::Vec3b >(x, y)[1] = g;
+			m_renderedImage.at < cv::Vec3b >(x, y)[2] = r;
 		}
 	}
-	cv::cvtColor(updatedImage, m_renderedImage, cv::COLOR_HSV2BGR);
 }
 
 void EPProject::setSaturation(int p_saturation)
 {
 	m_saturation = p_saturation;
+	render();
 }
