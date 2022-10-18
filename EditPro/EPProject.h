@@ -14,13 +14,15 @@ public:
 	cv::Mat getRenderedImage();
 	ImageViewer* getImageViewer();
 	int getSaturation();
+	int getHue();
 	void setSaturation(int p_saturation);
-
+	void setHue(int p_hue);
 
 	//TODO : implement the render and export functions
 	void render();
 
 	void updateSaturation();
+	void updateHue();
 
 
 private :
@@ -30,5 +32,5 @@ private :
 	//NOTE : opencv range for saturation is from 0 to 255 and our range is from 0 to 100 
 	//so the value of saturation should be normalized in the render function to match opencv's range
 	int m_saturation = 50;
-
+	int m_hue = 50;
 };

@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_openedProject->render();
 
     connect(ui.saturation_slider, &QSlider::valueChanged, this, &MainWindow::changeSaturation);
+    connect(ui.hue_slider, &QSlider::valueChanged, this, &MainWindow::changeHue);
 }
 
 MainWindow::~MainWindow()
@@ -26,5 +27,9 @@ MainWindow::~MainWindow()
 void MainWindow::changeSaturation(int p_saturation)
 {
     m_openedProject->setSaturation(p_saturation);
+}
+void MainWindow::changeHue(int p_hue)
+{
+    m_openedProject->setHue(p_hue);
 }
 

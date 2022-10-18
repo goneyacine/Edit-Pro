@@ -12,6 +12,7 @@ public:
     ~MainWindow();
 public slots:
     void changeSaturation(int p_saturation);
+    void changeHue(int p_hue);
 private:
     Ui::MainWindowClass ui;
     EPProject* m_openedProject;
