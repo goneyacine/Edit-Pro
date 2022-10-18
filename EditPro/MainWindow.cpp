@@ -15,9 +15,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     m_openedProject = new EPProject(imageViewer, img);
-    m_openedProject->setSaturation(10);
-    m_openedProject->render();
+
+    //TODO : the set saturation needs to be fixed 
+    
+    //m_openedProject->setSaturation(10);
+   //m_openedProject->render();
 }
 
 MainWindow::~MainWindow()
 {}
+
