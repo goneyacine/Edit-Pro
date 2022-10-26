@@ -27,11 +27,11 @@ void ImageViewer::updateImage(cv::Mat* p_img)
 	uchar blue;
 	cv::Vec3b* color;
 
-	for (int y = 0; y < p_img->rows; y++)
+	for (int x = 0; x < p_img->rows; x++)
 	{
-		for (int x = 0; x < p_img->cols; x++)
+		for (int y = 0; y < p_img->cols; y++)
 		{
-			color = &p_img->at<cv::Vec3b>(y, x);
+			color = &p_img->at<cv::Vec3b>(x, y);
 
 
 			red = (*color)[2];
