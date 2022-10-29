@@ -1,6 +1,5 @@
 #include "MainWindow.h"
 #include "ImageViewer.h"
-#include <qslider.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,12 +9,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui.tab->layout()->addWidget(imageViewer->getQLabel());
 
     
-
+    
   
 
-    m_openedProject = new EPProject(imageViewer,1000,1000);
+    m_openedProject = new EPProject(imageViewer,1000,1000,ui.layersGUIElementPanel->layout());
+
+    //TODO : I need to implement that import sytem later
     import();
-    connect(ui.actionImport, &QAction::trigger, this, &MainWindow::import);
+  // connect(ui.actionImport, &QAction::trigger, this, &MainWindow::import);
 }
 
 MainWindow::~MainWindow()
@@ -23,7 +24,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::import()
 {
-    m_openedProject->importToCurrentLayer(cv::imread("C:\\Users\\TMAX27\\Desktop\\test.png"));
+    m_openedProject->importAsNewLayer(cv::imread("C:\\Users\\TMAX27\\Desktop\\test.png"));
 }
 
 

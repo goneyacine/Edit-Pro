@@ -101,6 +101,8 @@
     <ClCompile Include="EPProject.cpp" />
     <ClCompile Include="ImageViewer.cpp" />
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="LayerGUIElement.cpp" />
+    <ClCompile Include="LayersGUIManager.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="EditPro.ico" />
@@ -111,6 +113,8 @@
     <ClInclude Include="EPProject.h" />
     <ClInclude Include="ImageViewer.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="LayerGUIElement.h" />
+    <ClInclude Include="LayersGUIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

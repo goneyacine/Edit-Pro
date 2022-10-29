@@ -3,13 +3,15 @@
 #include "ImageViewer.h"
 #include <iostream>
 #include "Layer.h"
-// Quick note : EPProject stands for Edit Pro Project :)
+#include <qlayout.h>
+#include "LayersGUIManager.h"
 
+// Quick note : EPProject stands for Edit Pro Project :)
 class EPProject
 {
 public:
 
-	EPProject(ImageViewer* p_imageViewer,int p_width,int p_hieght);
+	EPProject(ImageViewer* p_imageViewer,int p_width,int p_hieght,QLayout* p_layersGUIElementsLayout);
 	~EPProject();
 
 	cv::Mat getRenderedImage();
@@ -26,5 +28,6 @@ private :
 	cv::Mat m_renderedImage;
 	std::vector<Layer*> m_layers;
 	int m_width, m_hieght;
-	int m_currentLayer = 0;
+	int m_currentLayer = -1;
+	LayersGUIManager* m_layersGUIManager;
 };
