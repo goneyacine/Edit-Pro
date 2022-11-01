@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui.setupUi(this);
 
  
-    m_openedProject = new EPProject(300,1000,ui.layersGUIElementPanel->layout());
+    m_openedProject = new EPProject(300,300,ui.layersGUIElementPanel->layout());
     ui.tab->layout()->addWidget(m_openedProject->getCanvas());
     
 

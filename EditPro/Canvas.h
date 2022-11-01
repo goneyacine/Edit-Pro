@@ -18,11 +18,14 @@ protected :
 	void paintEvent(QPaintEvent* event) override;
 private :
 	//the image rendered by epproject is converted into a pixmap & it's called m_canvasPixmap
-	QPixmap* m_canvasPixmap;
+	QImage* m_canvasImage;
 	//canvas size
 	int m_width;
 	int m_height;
 	//canvas view offset
 	int m_xOffset = 0;
 	int m_yOffset = 0;
+
+	//zoom value (the default value is %100)
+	int m_zoom = 100;
 };
