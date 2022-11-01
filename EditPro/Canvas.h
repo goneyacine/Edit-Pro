@@ -19,6 +19,7 @@ protected :
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
+	void wheelEvent(QWheelEvent* event) override;
 private :
 	//the image rendered by epproject is converted into a pixmap & it's called m_canvasPixmap
 	QImage* m_canvasImage;

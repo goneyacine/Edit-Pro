@@ -51,9 +51,9 @@ void Canvas::updateCanvas(cv::Mat p_img)
 void Canvas::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
-	painter.fillRect(QRect(0, 0, width(), height()), Qt::gray);
+	painter.fillRect(QRect(0, 0, width(), height()), QColor(80, 80, 80));
 	painter.drawImage(QRect(m_xOffset - (m_width / 2), m_yOffset - (m_height / 2),
-		m_width * (m_zoom / 100), m_height * (m_zoom / 100))
+		m_width * ((float)m_zoom / 100), m_height * ((float)m_zoom / 100))
 		, *m_canvasImage);
 }
 
@@ -85,5 +85,25 @@ void Canvas::mouseMoveEvent(QMouseEvent* event)
 		old_cursor_x = QCursor::pos().x();
 		old_cursor_y = QCursor::pos().y();
 		update();
+	}
+}
+
+void Canvas::wheelEvent(QWheelEvent* event) 
+{
+	if (event->angleDelta().y() > 0)
+	{
+		if (m_zoom + 25 <= 500)
+		{
+			m_zoom += 25;
+			update();
+		}
+	}
+	else
+	{
+		if (m_zoom - 25 >= 25)
+		{
+			m_zoom -= 25;
+			update();
+		}
 	}
 }
