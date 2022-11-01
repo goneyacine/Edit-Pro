@@ -32,7 +32,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.3.2_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;opengl</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
@@ -99,11 +99,16 @@
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="ColorConvension.cpp" />
     <ClCompile Include="EPProject.cpp" />
-    <ClCompile Include="ImageViewer.cpp" />
+    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="LayerGUIElement.cpp" />
     <ClCompile Include="LayersGUIManager.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="MainWindow.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <None Include="EditPro.ico" />
     <ResourceCompile Include="EditPro.rc" />
@@ -111,7 +116,7 @@
   <ItemGroup>
     <ClInclude Include="ColorConvension.h" />
     <ClInclude Include="EPProject.h" />
-    <ClInclude Include="ImageViewer.h" />
+    <QtMoc Include="Canvas.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LayerGUIElement.h" />
     <ClInclude Include="LayersGUIManager.h" />

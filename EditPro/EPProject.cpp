@@ -1,9 +1,10 @@
 #include "EPProject.h"
 
 
-EPProject::EPProject(ImageViewer* p_imageViewer,int p_width,int p_hieght, QLayout* p_layersGUIElementsLayout)
-	: m_imageViewer(p_imageViewer), m_width(p_width),m_hieght(p_hieght)
+EPProject::EPProject(int p_width,int p_hieght, QLayout* p_layersGUIElementsLayout)
+	:  m_width(p_width),m_hieght(p_hieght)
 {
+	m_canvas = new Canvas(NULL,m_width,m_hieght);
 	m_layersGUIManager = new LayersGUIManager(p_layersGUIElementsLayout,m_layers);
 	render();
 }
@@ -18,9 +19,9 @@ cv::Mat EPProject::getRenderedImage()
 }
 
 
-ImageViewer* EPProject::getImageViewer()
+Canvas* EPProject::getCanvas()
 {
-	return m_imageViewer;
+	return m_canvas;
 }
 
 
@@ -32,7 +33,7 @@ void EPProject::render()
 
 	m_renderedImage = m_layers.at(m_currentLayer)->getRenderedImage().clone();
 
-	m_imageViewer->updateImage(&m_renderedImage);
+	m_canvas->updateCanvas(m_renderedImage);
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <opencv2/opencv.hpp>
-#include "ImageViewer.h"
+#include "Canvas.h"
 #include <iostream>
 #include "Layer.h"
 #include <qlayout.h>
@@ -11,11 +11,11 @@ class EPProject
 {
 public:
 
-	EPProject(ImageViewer* p_imageViewer,int p_width,int p_hieght,QLayout* p_layersGUIElementsLayout);
+	EPProject(int p_width,int p_hieght,QLayout* p_layersGUIElementsLayout);
 	~EPProject();
 
 	cv::Mat getRenderedImage();
-	ImageViewer* getImageViewer();
+	Canvas* getCanvas();
 
 	//TODO : implement the render and export functions
 	void render();
@@ -24,7 +24,7 @@ public:
 	void importToCurrentLayer(cv::Mat p_img);
 
 private :
-	ImageViewer* m_imageViewer;
+	Canvas* m_canvas;
 	cv::Mat m_renderedImage;
 	std::vector<Layer*> m_layers;
 	int m_width, m_hieght;

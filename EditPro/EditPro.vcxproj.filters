@@ -46,10 +46,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageViewer.cpp">
+    <ClCompile Include="Canvas.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="EPProject.cpp">
@@ -67,16 +64,19 @@
     <ClCompile Include="LayersGUIManager.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
       <Filter>Header Files\UI</Filter>
     </QtMoc>
+    <QtMoc Include="Canvas.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImageViewer.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="EPProject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
