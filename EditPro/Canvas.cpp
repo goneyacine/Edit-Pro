@@ -7,7 +7,7 @@ Canvas::Canvas(QWidget* parent,int p_width,int p_height) : m_width(p_width),m_he
 {
 	m_canvasImage = new QImage(m_width,m_height,QImage::Format_RGB888);
 	m_canvasImage->fill(Qt::black);
-
+	setMouseTracking(true);
 	m_xOffset = this->width() / 2;
 	m_yOffset = this->height() / 2;
 }
@@ -18,7 +18,6 @@ Canvas::~Canvas()
 {
 
 }
-
 void Canvas::updateCanvas(cv::Mat p_img)
 {
 	if(m_canvasImage == NULL)
@@ -51,10 +50,40 @@ void Canvas::updateCanvas(cv::Mat p_img)
 
 void Canvas::paintEvent(QPaintEvent* event)
 {
-	QPainter qp(this);
-	qp.fillRect(QRect(0, 0, width(), height()), Qt::gray);
-	qp.drawImage(QRect(m_xOffset - (m_width / 2),m_yOffset - (m_height / 2),
-		m_width * (m_zoom / 100),m_height * (m_zoom / 100))
+	QPainter painter(this);
+	painter.fillRect(QRect(0, 0, width(), height()), Qt::gray);
+	painter.drawImage(QRect(m_xOffset - (m_width / 2), m_yOffset - (m_height / 2),
+		m_width * (m_zoom / 100), m_height * (m_zoom / 100))
 		, *m_canvasImage);
 }
 
+void Canvas::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		old_cursor_x = QCursor::pos().x();
+		old_cursor_y = QCursor::pos().y();
+		mouseRightButtonIsPressed = true;
+	}
+}
+void Canvas::mouseReleaseEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		old_cursor_x = -1;
+		old_cursor_y = -1;
+		mouseRightButtonIsPressed = false;
+	}
+}
+void Canvas::mouseMoveEvent(QMouseEvent* event)
+{
+	if (mouseRightButtonIsPressed)
+	{
+		m_xOffset += (QCursor::pos().x() - old_cursor_x);
+		m_yOffset += (QCursor::pos().y() - old_cursor_y);
+
+		old_cursor_x = QCursor::pos().x();
+		old_cursor_y = QCursor::pos().y();
+		update();
+	}
+}

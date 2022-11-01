@@ -16,6 +16,9 @@ public :
 
 protected :
 	void paintEvent(QPaintEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent* event) override;
+	void mouseMoveEvent(QMouseEvent* event) override;
 private :
 	//the image rendered by epproject is converted into a pixmap & it's called m_canvasPixmap
 	QImage* m_canvasImage;
@@ -28,4 +31,10 @@ private :
 
 	//zoom value (the default value is %100)
 	int m_zoom = 100;
+
+	//these are the old coordinates of the cursor
+	int old_cursor_x = -1;
+	int old_cursor_y = -1;
+
+	bool mouseRightButtonIsPressed = false;
 };
