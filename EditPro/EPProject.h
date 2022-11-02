@@ -27,7 +27,7 @@ private :
 	Canvas* m_canvas;
 	cv::Mat m_renderedImage;
 	std::vector<Layer*> m_layers;
-	int m_width, m_hieght;
+	int m_width, m_height;
 	int m_currentLayer = -1;
 	LayersGUIManager* m_layersGUIManager;
 };

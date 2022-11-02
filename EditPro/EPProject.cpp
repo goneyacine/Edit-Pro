@@ -2,9 +2,9 @@
 
 
 EPProject::EPProject(int p_width,int p_hieght, QLayout* p_layersGUIElementsLayout)
-	:  m_width(p_width),m_hieght(p_hieght)
+	:  m_width(p_width),m_height(p_hieght)
 {
-	m_canvas = new Canvas(NULL,m_width,m_hieght);
+	m_canvas = new Canvas(NULL,m_width,m_height);
 	m_layersGUIManager = new LayersGUIManager(p_layersGUIElementsLayout,m_layers);
 	render();
 }
@@ -24,14 +24,33 @@ Canvas* EPProject::getCanvas()
 	return m_canvas;
 }
 
-
-//TODO : the render function should be implemented and this code should be replaced
+//TODO : adding support for alpha color channel
 void EPProject::render()
 {
-	if (m_currentLayer < 0 || m_layers.size() == 0)
+	if (m_layers.size() == 0)
 		return;
 
-	m_renderedImage = m_layers.at(m_currentLayer)->getRenderedImage().clone();
+	cv::Mat tempImg(cv::Size(m_width, m_height), CV_8UC3, cv::Scalar(255,255,255));
+
+	for (auto layer : m_layers)
+	{
+		if (!layer->isVisible())
+			continue;
+
+		for (int y = 0; y < layer->getRenderedImage().rows; y++)
+		{
+			if (y >= tempImg.rows)
+				continue;
+			for (int x = 0; x < layer->getRenderedImage().cols; x++)
+			{
+				if (x >= tempImg.cols)
+					continue;
+				tempImg.at<cv::Vec3b>(y, x) = layer->getRenderedImage().at<cv::Vec3b>(y, x);
+			}
+		}
+	}
+   
+	m_renderedImage = tempImg.clone();
 
 	m_canvas->updateCanvas(m_renderedImage);
 }
@@ -39,7 +58,7 @@ void EPProject::render()
 
 void EPProject::importAsNewLayer(cv::Mat p_img)
 {
-	Layer* newLayer = new Layer(m_width, m_hieght);
+	Layer* newLayer = new Layer(m_width, m_height);
 	newLayer->import(p_img);
 	m_layers.push_back(newLayer);
 

@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui.setupUi(this);
 
  
-    m_openedProject = new EPProject(300,300,ui.layersGUIElementPanel->layout());
+    m_openedProject = new EPProject(1000,1000,ui.layersGUIElementPanel->layout());
     ui.tab->layout()->addWidget(m_openedProject->getCanvas());
     
 
@@ -24,6 +24,7 @@ MainWindow::~MainWindow()
 void MainWindow::import()
 {
     m_openedProject->importAsNewLayer(cv::imread("C:\\Users\\TMAX27\\Desktop\\test.png"));
+    m_openedProject->importAsNewLayer(cv::imread("C:\\Users\\TMAX27\\Desktop\\test2.png"));
 }
 
 

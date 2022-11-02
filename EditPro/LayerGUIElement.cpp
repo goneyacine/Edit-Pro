@@ -7,15 +7,22 @@ LayerGUIElement::LayerGUIElement(Layer* p_connectedLayer) : m_connectedLayer(p_c
 	m_layout = new QVBoxLayout;
 
 
-	m_mainWidget->setMaximumSize(200, 100);
-	m_mainWidget->setMinimumSize(150, 100);
-
-
+	m_mainWidget->setMaximumSize(200, 140);
+	m_mainWidget->setMinimumSize(150, 140);
 
 	m_layerNameLineEdit = new QLineEdit();
 	m_upButton = new QPushButton();
 	m_downButton = new QPushButton();
 	m_showHideButton = new QPushButton();
+
+	m_layerNameLineEdit->setText(m_connectedLayer->getName());
+	m_upButton->setText("Up");
+	m_downButton->setText("Down");
+
+	if (m_connectedLayer->isVisible())
+		m_showHideButton->setText("Hide");
+	else
+		m_showHideButton->setText("Show");
 
 	m_layout->addWidget(m_layerNameLineEdit);
 	m_layout->addWidget(m_upButton);
