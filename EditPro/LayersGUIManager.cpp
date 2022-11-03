@@ -2,12 +2,14 @@
 
 
 
-LayersGUIManager::LayersGUIManager(QLayout* p_layout,std::vector<Layer*> p_layers) : m_layout(p_layout)
+LayersGUIManager::LayersGUIManager(QLayout* p_layout,EPProject* p_epproject) :
+	m_layout(p_layout), m_epproject(p_epproject)
 {
-	reloadUI(p_layers);
+	connect(m_epproject, &EPProject::layersUpdated, this, &LayersGUIManager::reloadUI);
+	reloadUI();
 }
 
-void LayersGUIManager::reloadUI(std::vector<Layer*> p_layers)
+void LayersGUIManager::reloadUI()
 {
   //deleting old elements
 		for (auto& element : m_layerGUIElements)
@@ -18,9 +20,10 @@ void LayersGUIManager::reloadUI(std::vector<Layer*> p_layers)
 
 	
 		m_layerGUIElements.clear();
-			for (auto& layer : p_layers)
+			for (auto& layer : *m_epproject->getLayers())
 			{
 				LayerGUIElement* element = new LayerGUIElement(layer);
+				connect(element, SIGNAL(update()), this, SLOT(onUpdate()));
 				m_layerGUIElements.push_back(element);
 				m_layout->addWidget(element->getMainWidget());
 			}

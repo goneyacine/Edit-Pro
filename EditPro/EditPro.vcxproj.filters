@@ -27,6 +27,12 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{53962a6d-1713-49f4-b3e0-4669554accd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Vectors">
+      <UniqueIdentifier>{963f8d30-3385-4656-af30-5968bde7537b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Vectors">
+      <UniqueIdentifier>{e4ebcb8c-431c-4542-bdf7-d2cb2dd01f4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc">
@@ -46,7 +52,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Canvas.cpp">
+    <ClCompile Include="CanvasView.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="EPProject.cpp">
@@ -67,30 +73,45 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Source Files\Vectors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
       <Filter>Header Files\UI</Filter>
     </QtMoc>
-    <QtMoc Include="Canvas.h">
+    <QtMoc Include="CanvasView.h">
       <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="LayerGUIElement.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="LayersGUIManager.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="EPProject.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EPProject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ColorConvension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LayersGUIManager.h">
-      <Filter>Header Files\UI</Filter>
+    <ClInclude Include="Manager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LayerGUIElement.h">
-      <Filter>Header Files\UI</Filter>
+    <ClInclude Include="Vector2.h">
+      <Filter>Header Files\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="Vectors.h">
+      <Filter>Header Files\Vectors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

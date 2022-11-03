@@ -5,13 +5,13 @@
 #include <opencv2/opencv.hpp>
 #include <qevent.h>
 
-class Canvas  : public QWidget
+class CanvasView  : public QWidget
 {
 	Q_OBJECT
 
 public :
-	Canvas(QWidget* parent,int p_width,int p_height);
-	~Canvas();
+	CanvasView(QWidget* parent,int p_width,int p_height);
+	~CanvasView();
 	void updateCanvas(cv::Mat p_img);
 
 protected :

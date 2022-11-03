@@ -6,13 +6,19 @@
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include "Layer.h"
-class LayerGUIElement
+class LayerGUIElement : public QObject
 {
-
+	Q_OBJECT
 public :
 	LayerGUIElement(Layer* p_connectedLayer);
 	~LayerGUIElement();
 	QWidget* getMainWidget();
+public slots:
+	void layerUp();
+	void layerDown();
+	void layerRename(QString p_name);
+	void layerShowHide();
+
 private : 
 	Layer* m_connectedLayer;
 	QWidget* m_mainWidget;

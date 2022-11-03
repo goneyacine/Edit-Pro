@@ -94,12 +94,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="Vector2.cpp" />
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="MainWindow.ui" />
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="ColorConvension.cpp" />
     <ClCompile Include="EPProject.cpp" />
-    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="CanvasView.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="LayerGUIElement.cpp" />
     <ClCompile Include="LayersGUIManager.cpp" />
@@ -115,11 +117,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorConvension.h" />
-    <ClInclude Include="EPProject.h" />
-    <QtMoc Include="Canvas.h" />
+    <ClInclude Include="Manager.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vectors.h" />
+    <QtMoc Include="EPProject.h" />
+    <QtMoc Include="CanvasView.h" />
     <ClInclude Include="Layer.h" />
-    <ClInclude Include="LayerGUIElement.h" />
-    <ClInclude Include="LayersGUIManager.h" />
+    <QtMoc Include="LayerGUIElement.h" />
+    <QtMoc Include="LayersGUIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

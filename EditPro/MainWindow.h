@@ -12,10 +12,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public slots:
-    void import();
+    QLayout* getLayersGUILayout();
+    QLayout* getCanvasViewLayout();
 
 private:
     Ui::MainWindowClass ui;
-    EPProject* m_openedProject;
 };

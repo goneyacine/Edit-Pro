@@ -5,17 +5,22 @@
 #include "Layer.h"
 #include "LayerGUIElement.h"
 #include <qlayout.h>
+#include "EPProject.h"
 
-class LayersGUIManager
+class LayersGUIManager : public QObject
 {
-public :
-	LayersGUIManager(QLayout* p_layout,std::vector<Layer*> p_layers);
 
-	void reloadUI(std::vector<Layer*> p_layers);
+	Q_OBJECT
 
+public:
+	LayersGUIManager(QLayout* p_layout,EPProject* p_epproject);
 
-private :
+	void reloadUI();
+
+private:
 	//this is the layout where all the ui elements should added to
 	QLayout* m_layout;
+	EPProject* m_epproject;
 	std::vector<LayerGUIElement*> m_layerGUIElements;
+
 };

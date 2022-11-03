@@ -1,9 +1,9 @@
-#include "Canvas.h"
+#include "CanvasView.h"
 
 #include <opencv2/opencv.hpp>
 #include <qlayout.h>
 
-Canvas::Canvas(QWidget* parent,int p_width,int p_height) : m_width(p_width),m_height(p_height)
+CanvasView::CanvasView(QWidget* parent,int p_width,int p_height) : m_width(p_width),m_height(p_height)
 {
 	m_canvasImage = new QImage(m_width,m_height,QImage::Format_RGB888);
 	m_canvasImage->fill(Qt::black);
@@ -14,11 +14,11 @@ Canvas::Canvas(QWidget* parent,int p_width,int p_height) : m_width(p_width),m_he
 
 
 
-Canvas::~Canvas()
+CanvasView::~CanvasView()
 {
 
 }
-void Canvas::updateCanvas(cv::Mat p_img)
+void CanvasView::updateCanvas(cv::Mat p_img)
 {
 	if(m_canvasImage == NULL)
 		m_canvasImage = new QImage(m_width, m_height, QImage::Format_RGB888);
@@ -48,7 +48,7 @@ void Canvas::updateCanvas(cv::Mat p_img)
 }
 
 
-void Canvas::paintEvent(QPaintEvent* event)
+void CanvasView::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
 	painter.fillRect(QRect(0, 0, width(), height()), QColor(80, 80, 80));
@@ -57,7 +57,7 @@ void Canvas::paintEvent(QPaintEvent* event)
 		, *m_canvasImage);
 }
 
-void Canvas::mousePressEvent(QMouseEvent* event)
+void CanvasView::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton)
 	{
@@ -66,7 +66,7 @@ void Canvas::mousePressEvent(QMouseEvent* event)
 		mouseRightButtonIsPressed = true;
 	}
 }
-void Canvas::mouseReleaseEvent(QMouseEvent* event)
+void CanvasView::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton)
 	{
@@ -75,7 +75,7 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event)
 		mouseRightButtonIsPressed = false;
 	}
 }
-void Canvas::mouseMoveEvent(QMouseEvent* event)
+void CanvasView::mouseMoveEvent(QMouseEvent* event)
 {
 	if (mouseRightButtonIsPressed)
 	{
@@ -88,7 +88,7 @@ void Canvas::mouseMoveEvent(QMouseEvent* event)
 	}
 }
 
-void Canvas::wheelEvent(QWheelEvent* event) 
+void CanvasView::wheelEvent(QWheelEvent* event) 
 {
 	if (event->angleDelta().y() > 0)
 	{
