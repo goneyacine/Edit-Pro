@@ -20,10 +20,10 @@ void LayersGUIManager::reloadUI()
 
 	
 		m_layerGUIElements.clear();
-			for (auto& layer : *m_epproject->getLayers())
+			for (int i = m_epproject->getLayers()->size() - 1;i >= 0;i--)
 			{
-				LayerGUIElement* element = new LayerGUIElement(layer);
-				connect(element, SIGNAL(update()), this, SLOT(onUpdate()));
+				LayerGUIElement* element = new LayerGUIElement(m_epproject->getLayers()->at(i));
+				connect(element, &LayerGUIElement::layerStatUpdated, m_epproject,&EPProject::render);
 				m_layerGUIElements.push_back(element);
 				m_layout->addWidget(element->getMainWidget());
 			}

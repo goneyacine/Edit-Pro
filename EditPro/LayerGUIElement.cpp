@@ -79,6 +79,8 @@ void LayerGUIElement::layerShowHide()
 	else
 		m_showHideButton->setText("Show");
 
+	emit layerStatUpdated();
+
 	qDebug() << "Layer Show Hide Button Is Working " << m_connectedLayer->isVisible();
 }
 

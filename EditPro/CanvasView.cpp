@@ -44,7 +44,7 @@ void CanvasView::updateCanvas(cv::Mat p_img)
 
 		}
 	}
-
+	update();
 }
 
 

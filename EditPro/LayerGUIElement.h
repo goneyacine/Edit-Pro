@@ -13,6 +13,9 @@ public :
 	LayerGUIElement(Layer* p_connectedLayer);
 	~LayerGUIElement();
 	QWidget* getMainWidget();
+
+signals:
+	void layerStatUpdated();
 public slots:
 	void layerUp();
 	void layerDown();
