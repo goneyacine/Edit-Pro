@@ -11,21 +11,22 @@ LayersGUIManager::LayersGUIManager(QLayout* p_layout,EPProject* p_epproject) :
 
 void LayersGUIManager::reloadUI()
 {
-  //deleting old elements
-		for (auto& element : m_layerGUIElements)
-		{
-			m_layout->removeWidget(element->getMainWidget());
-			delete element;
-		}
+	//deleting old elements
+	for (auto& element : m_layerGUIElements)
+	{
+		m_layout->removeWidget(element->getMainWidget());
+		delete element;
+	}
 
-	
-		m_layerGUIElements.clear();
-			for (int i = m_epproject->getLayers()->size() - 1;i >= 0;i--)
-			{
-				LayerGUIElement* element = new LayerGUIElement(m_epproject->getLayers()->at(i));
-				connect(element, &LayerGUIElement::layerStatUpdated, m_epproject,&EPProject::render);
-				m_layerGUIElements.push_back(element);
-				m_layout->addWidget(element->getMainWidget());
-			}
+	m_layerGUIElements.clear();
+
+
+	for (int i = m_epproject->getLayers()->size() - 1; i >= 0; i--)
+	{
+		LayerGUIElement* element = new LayerGUIElement(m_epproject->getLayers()->at(i));
+		connect(element, &LayerGUIElement::layerStatUpdated, m_epproject, &EPProject::render);
+		m_layerGUIElements.push_back(element);
+		m_layout->addWidget(element->getMainWidget());
+	}
 
 }

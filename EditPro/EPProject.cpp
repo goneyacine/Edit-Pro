@@ -1,6 +1,9 @@
 #include "EPProject.h"
 
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="p_size">the canvas size (width & height)</param>
 EPProject::EPProject(EP::Vector2 p_size)
 	: m_size(p_size)
 {
@@ -18,7 +21,7 @@ cv::Mat EPProject::getRenderedImage()
 	return m_renderedImage;
 }
 
-
+///
 CanvasView* EPProject::getCanvasView()
 {
 	return m_canvas;
@@ -30,6 +33,7 @@ void EPProject::render()
 	if (m_layers.size() == 0)
 		return;
 
+	//creating an empty white background
 	cv::Mat tempImg(cv::Size(m_size.x, m_size.y), CV_8UC3, cv::Scalar(255,255,255));
 
 	for (auto layer : m_layers)

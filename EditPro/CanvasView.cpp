@@ -27,8 +27,7 @@ void CanvasView::updateCanvas(cv::Mat p_img)
 	m_canvasImage->fill(Qt::white);
 
 
-	//swaping the red and blue values to convert the format from BGR (used by opencv) to RGB (used by qt)
-
+    //converting OpenCV Mat (p_img) into QImage (m_canvasImage) to be displayed in screen
 	cv::Vec3b color;
 	QColor qcolor;
 	for (int y = 0; y < p_img.rows; y++)
@@ -44,6 +43,7 @@ void CanvasView::updateCanvas(cv::Mat p_img)
 
 		}
 	}
+	//calling update (it's a QWidget function) function to call paint event
 	update();
 }
 
