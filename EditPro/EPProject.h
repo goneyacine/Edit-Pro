@@ -26,6 +26,9 @@ public:
 
 signals:
 	void layersUpdated();
+public slots:
+	void layerUp(Layer* p_layer);
+	void layerDown (Layer* p_layer);
 
 private :
 	CanvasView* m_canvas;

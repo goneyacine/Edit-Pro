@@ -24,7 +24,11 @@ void LayersGUIManager::reloadUI()
 	for (int i = m_epproject->getLayers()->size() - 1; i >= 0; i--)
 	{
 		LayerGUIElement* element = new LayerGUIElement(m_epproject->getLayers()->at(i));
-		connect(element, &LayerGUIElement::layerStatUpdated, m_epproject, &EPProject::render);
+		//the "layerStatusUpdated" signal is emitted whenever the user changes the visibility of the layer (Show/Hide)
+		connect(element, &LayerGUIElement::layerStatusUpdated, m_epproject, &EPProject::render);
+
+		connect(element, &LayerGUIElement::layerUp, m_epproject, &EPProject::layerUp);
+		connect(element, &LayerGUIElement::layerDown, m_epproject, &EPProject::layerDown);
 		m_layerGUIElements.push_back(element);
 		m_layout->addWidget(element->getMainWidget());
 	}

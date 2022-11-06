@@ -15,12 +15,14 @@ public :
 	QWidget* getMainWidget();
 
 signals:
-	void layerStatUpdated();
+	void layerStatusUpdated();
+	void layerUp(Layer* p_layer);
+	void layerDown(Layer* p_layer);
 public slots:
-	void layerUp();
-	void layerDown();
+	void onLayerUpCliked();
+	void onLayerDownCliked();
 	void layerRename(QString p_name);
-	void layerShowHide();
+	void onLayerShowHideCliked();
 
 private : 
 	Layer* m_connectedLayer;

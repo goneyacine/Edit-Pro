@@ -35,9 +35,9 @@ LayerGUIElement::LayerGUIElement(Layer* p_connectedLayer) :
 	m_mainWidget->setLayout(m_layout);
 
 
-	connect(m_upButton, &QPushButton::clicked, this, &LayerGUIElement::layerUp);
-	connect(m_downButton, &QPushButton::clicked, this, &LayerGUIElement::layerDown);
-	connect(m_showHideButton, &QPushButton::clicked, this, &LayerGUIElement::layerShowHide);
+	connect(m_upButton, &QPushButton::clicked, this, &LayerGUIElement::onLayerUpCliked);
+	connect(m_downButton, &QPushButton::clicked, this, &LayerGUIElement::onLayerDownCliked);
+	connect(m_showHideButton, &QPushButton::clicked, this, &LayerGUIElement::onLayerShowHideCliked);
 	connect(m_layerNameLineEdit, &QLineEdit::textEdited,this, &LayerGUIElement::layerRename);
 
 }
@@ -55,22 +55,21 @@ QWidget* LayerGUIElement::getMainWidget()
 	return m_mainWidget;
 }
 
-void LayerGUIElement::layerUp()
+void LayerGUIElement::onLayerUpCliked()
 {
-	qDebug() << "Layer Up Is Working";
+	emit layerUp(m_connectedLayer);
 }
-void LayerGUIElement::layerDown()
+void LayerGUIElement::onLayerDownCliked()
 {
-	qDebug() << "Layer Down Is Working";
+	emit layerDown(m_connectedLayer);
 }
 
 void LayerGUIElement::layerRename(QString p_name)
 {
 	m_connectedLayer->setName(p_name);
-	qDebug() << "New Layer Name " << m_connectedLayer->getName();
 }
 
-void LayerGUIElement::layerShowHide()
+void LayerGUIElement::onLayerShowHideCliked()
 {
 	m_connectedLayer->setVisible(!(m_connectedLayer->isVisible()));
 
@@ -79,9 +78,7 @@ void LayerGUIElement::layerShowHide()
 	else
 		m_showHideButton->setText("Show");
 
-	emit layerStatUpdated();
-
-	qDebug() << "Layer Show Hide Button Is Working " << m_connectedLayer->isVisible();
+	emit layerStatusUpdated();
 }
 
 

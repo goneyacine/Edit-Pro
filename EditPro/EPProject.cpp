@@ -87,3 +87,50 @@ std::vector<Layer*>* EPProject::getLayers()
 }
 
 
+void EPProject::layerUp(Layer* p_layer)
+{
+	for (int i = 0; i < m_layers.size(); i++)
+	{
+		//checking if the current layer in the layers list is the same as the input layer, if not then continue the iteration
+		if (p_layer == m_layers.at(i))
+		{
+
+			//if the target layer is already on the top then there is no need to move it up
+			if (i < m_layers.size() - 1)
+			{
+				//move the target layer up by swaping it's position in layers list
+				Layer* tempLayer = m_layers.at(i + 1);
+				m_layers.at(i + 1) = m_layers.at(i);
+				m_layers.at(i) = tempLayer;
+			}
+
+		}
+	}
+	render();
+	emit layersUpdated();
+}
+
+void EPProject::layerDown(Layer* p_layer)
+{
+	for (int i = 0; i < m_layers.size(); i++)
+	{
+		//checking if the current layer in the layers list is the same as the input layer, if not then continue the iteration
+		if (p_layer == m_layers.at(i))
+		{
+
+			//if the target layer is already on the buttom then there is no need to move it down
+			if (i > 0)
+			{
+				//move the target layer up by swaping it's position in layers list
+				Layer* tempLayer = m_layers.at(i - 1);
+				m_layers.at(i - 1) = m_layers.at(i);
+				m_layers.at(i) = tempLayer;
+			}
+
+		}
+	}
+	render();
+	emit layersUpdated();
+}
+
+
