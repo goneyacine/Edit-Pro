@@ -16,6 +16,10 @@ public:
 
     Ui::MainWindowClass* getUI();
 
+signals:
+    void importFile(QString p_filePath);
+public slots: 
+    void onImportFileAction();
 private:
     Ui::MainWindowClass ui;
 };

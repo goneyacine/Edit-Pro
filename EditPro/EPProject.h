@@ -30,6 +30,7 @@ public slots:
 	void layerUp(Layer* p_layer);
 	void layerDown (Layer* p_layer);
 	void deleteLayer(Layer* p_layer);
+	void importFile(QString p_filePath);
 
 private :
 	CanvasView* m_canvas;

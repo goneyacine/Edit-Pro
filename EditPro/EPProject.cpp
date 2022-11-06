@@ -159,4 +159,9 @@ void EPProject::deleteLayer(Layer* p_layer)
 	emit layersUpdated();
 }
 
+void EPProject::importFile(QString p_filePath)
+{
+	importAsNewLayer(cv::imread(p_filePath.toStdString()));
+}
+
 
