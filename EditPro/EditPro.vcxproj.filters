@@ -96,15 +96,15 @@
     <QtMoc Include="EPProject.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Manager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorConvension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">

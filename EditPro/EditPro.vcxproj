@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorConvension.h" />
-    <ClInclude Include="Manager.h" />
+    <QtMoc Include="Manager.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vectors.h" />
     <QtMoc Include="EPProject.h" />

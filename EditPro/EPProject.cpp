@@ -133,4 +133,12 @@ void EPProject::layerDown(Layer* p_layer)
 	emit layersUpdated();
 }
 
+void EPProject::createEmptyLayer()
+{
+	Layer* layer = new Layer(m_size.x,m_size.y,"Created Layer");
+	m_layers.push_back(layer);
+	render();
+	emit layersUpdated();
+}
+
 

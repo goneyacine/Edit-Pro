@@ -4,6 +4,8 @@
 #include "ui_MainWindow.h"
 #include <qevent.h>
 #include "EPProject.h"
+#include <qpushbutton.h>
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -14,6 +16,7 @@ public:
 
     QLayout* getLayersGUILayout();
     QLayout* getCanvasViewLayout();
+    QPushButton* getCreateLayerButton();
 
 private:
     Ui::MainWindowClass ui;

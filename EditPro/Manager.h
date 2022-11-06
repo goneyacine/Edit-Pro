@@ -6,10 +6,11 @@
 /// <summary>
 /// The Manager class works like a linker that links between logic side and gui side
 /// </summary>
-class Manager
+class Manager : QObject
 {
+	Q_OBJECT
 public :
-	Manager(EP::Vector2 p_size, QLayout* p_layersGUILayout, QLayout* p_canvasViewLayout);
+	Manager(EP::Vector2 p_size, QLayout* p_layersGUILayout, QLayout* p_canvasViewLayout, QPushButton* p_createLayerButton);
 	~Manager();
 
 	LayersGUIManager* getLayersGUIManager();

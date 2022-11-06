@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    Manager* manager = new Manager(EP::Vector2(1000,1000),w.getLayersGUILayout(),w.getCanvasViewLayout());
+    Manager* manager = new Manager(EP::Vector2(1000,1000),w.getLayersGUILayout(),w.getCanvasViewLayout(),w.getCreateLayerButton());
     w.show();
     return a.exec();
 }

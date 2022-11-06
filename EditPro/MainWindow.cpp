@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include <iostream>
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -19,6 +18,11 @@ QLayout* MainWindow::getLayersGUILayout()
 QLayout* MainWindow::getCanvasViewLayout()
 {
     return ui.tab->layout();
+}
+
+QPushButton* MainWindow::getCreateLayerButton()
+{
+    return ui.createLayerButton;
 }
 
 

@@ -23,7 +23,7 @@ public:
 	void importAsNewLayer(cv::Mat p_img);
 	void importToCurrentLayer(cv::Mat p_img);
 	std::vector<Layer*>* getLayers();
-
+	void createEmptyLayer();
 signals:
 	void layersUpdated();
 public slots:
