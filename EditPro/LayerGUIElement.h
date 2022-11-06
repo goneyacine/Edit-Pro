@@ -18,11 +18,13 @@ signals:
 	void layerStatusUpdated();
 	void layerUp(Layer* p_layer);
 	void layerDown(Layer* p_layer);
+	void deleteLayer(Layer* p_layer);
 public slots:
 	void onLayerUpCliked();
 	void onLayerDownCliked();
 	void layerRename(QString p_name);
 	void onLayerShowHideCliked();
+	void onDeleteLayerButtonCliked();
 
 private : 
 	Layer* m_connectedLayer;
@@ -32,4 +34,5 @@ private :
 	QPushButton* m_downButton;
 	QVBoxLayout* m_layout;
 	QPushButton* m_showHideButton;
+	QPushButton* m_deleteButton;
 };

@@ -14,9 +14,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QLayout* getLayersGUILayout();
-    QLayout* getCanvasViewLayout();
-    QPushButton* getCreateLayerButton();
+    Ui::MainWindowClass* getUI();
 
 private:
     Ui::MainWindowClass ui;

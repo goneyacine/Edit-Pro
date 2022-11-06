@@ -9,20 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {}
-
-QLayout* MainWindow::getLayersGUILayout()
+Ui::MainWindowClass* MainWindow::getUI()
 {
-    return ui.layersGUIElementPanel->layout();
-}
-
-QLayout* MainWindow::getCanvasViewLayout()
-{
-    return ui.tab->layout();
-}
-
-QPushButton* MainWindow::getCreateLayerButton()
-{
-    return ui.createLayerButton;
+    return &ui;
 }
 
 

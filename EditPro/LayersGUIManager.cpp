@@ -29,6 +29,7 @@ void LayersGUIManager::reloadUI()
 
 		connect(element, &LayerGUIElement::layerUp, m_epproject, &EPProject::layerUp);
 		connect(element, &LayerGUIElement::layerDown, m_epproject, &EPProject::layerDown);
+		connect(element, &LayerGUIElement::deleteLayer, m_epproject, &EPProject::deleteLayer);
 		m_layerGUIElements.push_back(element);
 		m_layout->addWidget(element->getMainWidget());
 	}

@@ -16,11 +16,12 @@ LayerGUIElement::LayerGUIElement(Layer* p_connectedLayer) :
 	m_upButton = new QPushButton();
 	m_downButton = new QPushButton();
 	m_showHideButton = new QPushButton();
+	m_deleteButton = new QPushButton();
 
 	m_layerNameLineEdit->setText(m_connectedLayer->getName());
 	m_upButton->setText("Up");
 	m_downButton->setText("Down");
-
+	m_deleteButton->setText("Delete");
 	if (m_connectedLayer->isVisible())
 		m_showHideButton->setText("Hide");
 	else
@@ -31,6 +32,7 @@ LayerGUIElement::LayerGUIElement(Layer* p_connectedLayer) :
 	m_layout->addWidget(m_upButton);
 	m_layout->addWidget(m_downButton);
 	m_layout->addWidget(m_showHideButton);
+	m_layout->addWidget(m_deleteButton);
 
 	m_mainWidget->setLayout(m_layout);
 
@@ -38,7 +40,8 @@ LayerGUIElement::LayerGUIElement(Layer* p_connectedLayer) :
 	connect(m_upButton, &QPushButton::clicked, this, &LayerGUIElement::onLayerUpCliked);
 	connect(m_downButton, &QPushButton::clicked, this, &LayerGUIElement::onLayerDownCliked);
 	connect(m_showHideButton, &QPushButton::clicked, this, &LayerGUIElement::onLayerShowHideCliked);
-	connect(m_layerNameLineEdit, &QLineEdit::textEdited,this, &LayerGUIElement::layerRename);
+	connect(m_layerNameLineEdit, &QLineEdit::textEdited, this, &LayerGUIElement::layerRename);
+	connect(m_deleteButton, &QPushButton::clicked, this, &LayerGUIElement::onDeleteLayerButtonCliked);
 
 }
 LayerGUIElement::~LayerGUIElement()
@@ -48,6 +51,7 @@ LayerGUIElement::~LayerGUIElement()
 	delete m_downButton;
 	delete m_showHideButton;
 	delete m_layout;
+	delete m_deleteButton;
 }
 
 QWidget* LayerGUIElement::getMainWidget()
@@ -81,6 +85,11 @@ void LayerGUIElement::onLayerShowHideCliked()
 	emit layerStatusUpdated();
 }
 
+
+void LayerGUIElement::onDeleteLayerButtonCliked()
+{
+	emit deleteLayer(m_connectedLayer);
+}
 
 
 

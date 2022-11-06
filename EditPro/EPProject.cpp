@@ -16,6 +16,11 @@ EPProject::~EPProject()
 	
 }
 
+EP::Vector2 EPProject::getSize()
+{
+	return m_size;
+}
+
 cv::Mat EPProject::getRenderedImage()
 {
 	return m_renderedImage;
@@ -137,6 +142,19 @@ void EPProject::createEmptyLayer()
 {
 	Layer* layer = new Layer(m_size.x,m_size.y,"Created Layer");
 	m_layers.push_back(layer);
+	render();
+	emit layersUpdated();
+}
+void EPProject::deleteLayer(Layer* p_layer)
+{
+	for (int i = 0; i < m_layers.size(); i++)
+	{
+		if (p_layer == m_layers.at(i))
+		{
+			m_layers.erase(m_layers.begin() + i);
+			delete p_layer;
+		}
+	}
 	render();
 	emit layersUpdated();
 }

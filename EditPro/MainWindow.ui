@@ -135,6 +135,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="createLayerButton">
+          <property name="text">
+           <string>Create Layer</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QWidget" name="layersGUIElementPanel" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
@@ -145,13 +152,6 @@
             </widget>
            </item>
           </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="createLayerButton">
-          <property name="text">
-           <string>Create Layer</string>
-          </property>
          </widget>
         </item>
         <item>
