@@ -2,6 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <qstring.h>
+
 class Layer
 {
 
@@ -31,7 +32,7 @@ public :
 	void setVisible(bool p_visible);
 
     //filters and effects
-	void applyWave();
+	void applyWave(float p_xIntensity,float p_yIntensity);
 
 private :
 	cv::Mat m_renderedImage;
