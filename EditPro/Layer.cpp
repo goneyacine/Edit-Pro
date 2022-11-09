@@ -34,7 +34,7 @@ void Layer::import(cv::Mat p_img)
 			if (x >= m_height)
 				continue;
 
-			m_renderedImage.at<cv::Vec3b>(y,x) = p_img.at<cv::Vec3b>(y, x);
+			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
 }
@@ -103,4 +103,13 @@ void Layer::applyWave(float p_xIntensity,float p_yIntensity)
 	}
 
 	m_renderedImage = tempImg.clone();
+}
+
+
+void Layer::applyGaussianBlur(float xSize, float ySize)
+{
+    //TODO : find a max value for the blur size
+	 //I need to improve this later
+	cv::Mat temp = m_renderedImage.clone();
+	cv::GaussianBlur(temp, m_renderedImage, cv::Size(xSize, ySize),5,0);
 }

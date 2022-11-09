@@ -33,6 +33,7 @@ public :
 
     //filters and effects
 	void applyWave(float p_xIntensity,float p_yIntensity);
+	void applyGaussianBlur(float xSize, float ySize);
 
 private :
 	cv::Mat m_renderedImage;
