@@ -1,6 +1,7 @@
 #include "Layer.h"
 
 
+
 Layer::Layer(int p_width, int p_height) : m_width(p_width),m_height(p_height)
 {
 	//initializing the rendered image
@@ -20,19 +21,18 @@ Layer::Layer(int p_width, int p_height,QString p_name) : m_width(p_width), m_hei
 void Layer::import(cv::Mat p_img)
 {
 
-	int xOffset = (m_width / 2) - (p_img.rows / 2);
-	int yOffset = (m_height / 2) - (p_img.cols/ 2);
 
-	for (int x = 0; x < p_img.rows; x++)
+
+	for (int y = 0; y < p_img.rows; y++)
 	{
-		if (x + xOffset >= m_width)
+		if (y >= m_height)
 			continue;
-		for (int y = 0; y < p_img.cols; y++)
+		for (int x = 0; x < p_img.cols; x++)
 		{
-			if (y + yOffset >= m_height)
+			if (x >= m_height)
 				continue;
 
-			m_renderedImage.at<cv::Vec3b>(x + xOffset, y + yOffset) = p_img.at<cv::Vec3b>(x, y);
+			m_renderedImage.at<cv::Vec3b>(y , x ) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
 
