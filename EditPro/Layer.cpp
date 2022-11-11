@@ -35,7 +35,6 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
-	applyWave(0, 100);
 }
 
 cv::Mat Layer::getRenderedImage()
