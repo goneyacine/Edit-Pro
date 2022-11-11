@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>713</width>
-    <height>479</height>
+    <width>925</width>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,10 +27,7 @@
     <property name="bottomMargin">
      <number>2</number>
     </property>
-    <item row="1" column="1">
-     <layout class="QGridLayout" name="canvasLayout"/>
-    </item>
-    <item row="1" column="2">
+    <item row="0" column="2">
      <widget class="QScrollArea" name="layersViewScrollArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -65,7 +62,7 @@
          <x>0</x>
          <y>0</y>
          <width>198</width>
-         <height>414</height>
+         <height>502</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -144,78 +141,146 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QWidget" name="optionsWidget" native="true">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>40</height>
-       </size>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <spacer name="optionsWidgetSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="toolsButton">
-         <property name="text">
-          <string>Tools</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="adjustmentButton">
-         <property name="text">
-          <string>Adjustment</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="effectsbutton">
-         <property name="text">
-          <string>Effects</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="optionsWidgetSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
+     <layout class="QGridLayout" name="canvasLayout"/>
     </item>
-    <item row="1" column="0">
-     <widget class="QWidget" name="noname" native="true">
+    <item row="0" column="0">
+     <widget class="QWidget" name="leftWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>220</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="leftWidgetMainWidget" native="true">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
+           <number>1</number>
+          </property>
+          <property name="spacing">
+           <number>1</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QTabWidget" name="tabWidget">
+            <property name="tabPosition">
+             <enum>QTabWidget::West</enum>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <widget class="QWidget" name="toolsTab">
+             <attribute name="title">
+              <string>Tools</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="effectTab">
+             <attribute name="title">
+              <string>Effects</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="adjustmentsTab">
+             <attribute name="title">
+              <string>Adjustments</string>
+             </attribute>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="leftWidgetShowHideButton" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>10</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>20</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>18</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>&lt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>
@@ -225,7 +290,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>713</width>
+     <width>925</width>
      <height>22</height>
     </rect>
    </property>

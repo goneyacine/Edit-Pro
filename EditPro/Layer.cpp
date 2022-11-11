@@ -4,16 +4,16 @@
 #define PI_NUM 3.14159265358979323846 /*the constant number pi*/
 
 
-Layer::Layer(int p_width, int p_height) : m_width(p_width),m_height(p_height)
+Layer::Layer(int p_width, int p_height) : m_width(p_width), m_height(p_height)
 {
 	//initializing the rendered image
 	m_renderedImage = cv::Mat::zeros(m_width, m_height, CV_8UC3);
 
-	m_name = "New Layer";
+	m_name = "New_Layer";
 }
 
 
-Layer::Layer(int p_width, int p_height,QString p_name) : m_width(p_width), m_height(p_height),m_name(p_name)
+Layer::Layer(int p_width, int p_height, QString p_name) : m_width(p_width), m_height(p_height), m_name(p_name)
 {
 	//initializing the rendered image
 	m_renderedImage = cv::Mat::zeros(m_width, m_height, CV_8UC3);
@@ -22,8 +22,6 @@ Layer::Layer(int p_width, int p_height,QString p_name) : m_width(p_width), m_hei
 //TODO : this function should reimplemented to later to support the alpha channel
 void Layer::import(cv::Mat p_img)
 {
-
-
 
 	for (int y = 0; y < p_img.rows; y++)
 	{
@@ -37,9 +35,7 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
-
 	applyWave(0, 100);
-	applyRandomNoise(10,100);
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -82,7 +78,7 @@ void Layer::setVisible(bool p_visible)
 	m_isVisible = p_visible;
 }
 
-void Layer::applyWave(float p_xIntensity,float p_yIntensity)
+void Layer::applyWave(float p_xIntensity, float p_yIntensity,float p_xFrequency,float p_yFrequency)
 {
 
 	int newX, newY;
@@ -94,14 +90,14 @@ void Layer::applyWave(float p_xIntensity,float p_yIntensity)
 
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-		    newY = y + (sin((float)x / (float)m_renderedImage.cols * 2 * PI_NUM) * p_yIntensity);
-			newX = x + (sin((float)y / (float)m_renderedImage.rows * 2 * PI_NUM) * p_xIntensity);
-			
+			newY = y + (sin((float)x / (float)m_renderedImage.cols * 2 * PI_NUM * p_yFrequency) * p_yIntensity);
+			newX = x + (sin((float)y / (float)m_renderedImage.rows * 2 * PI_NUM * p_xFrequency) * p_xIntensity);
+
 
 			if (newX >= m_width || newY >= m_height || newX < 0 || newY < 0)
 				continue;
 
-			tempImg.at<cv::Vec3b>(newY, newX) = m_renderedImage.at<cv::Vec3b>(y,x);
+			tempImg.at<cv::Vec3b>(newY, newX) = m_renderedImage.at<cv::Vec3b>(y, x);
 		}
 	}
 
@@ -111,13 +107,13 @@ void Layer::applyWave(float p_xIntensity,float p_yIntensity)
 
 void Layer::applyGaussianBlur(float xSize, float ySize)
 {
-    //TODO : find a max value for the blur size
+	//TODO : find a max value for the blur size
 	 //I need to improve this later
 	cv::Mat temp = m_renderedImage.clone();
-	cv::GaussianBlur(temp, m_renderedImage, cv::Size(xSize, ySize),5,0);
+	cv::GaussianBlur(temp, m_renderedImage, cv::Size(xSize, ySize), 5, 0);
 }
 
-void Layer::applyRandomNoise(int p_intensity,int p_opacity)
+void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 {
 	srand(time(0));
 
@@ -127,7 +123,7 @@ void Layer::applyRandomNoise(int p_intensity,int p_opacity)
 		p_intensity = 100;
 	else if (p_intensity < 0)
 		p_intensity = 0;
-    
+
 	if (p_opacity > 255)
 		p_opacity = 255;
 	else if (p_opacity < 0)
@@ -147,9 +143,9 @@ void Layer::applyRandomNoise(int p_intensity,int p_opacity)
 
 			pixelPtr = &m_renderedImage.at<cv::Vec3b>(y, x);
 			//applying noise 
-            (* pixelPtr)[0] += ((float)p_opacity / 255) *((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[0]);
-            (* pixelPtr)[1] += ((float)p_opacity / 255) *((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[2]);
-            (* pixelPtr)[2] += ((float)p_opacity / 255) *((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[1]);
+			(*pixelPtr)[0] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[0]);
+			(*pixelPtr)[1] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[2]);
+			(*pixelPtr)[2] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[1]);
 
 
 		}

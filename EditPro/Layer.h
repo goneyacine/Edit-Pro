@@ -32,7 +32,7 @@ public :
 	void setVisible(bool p_visible);
 
     //filters and effects
-	void applyWave(float p_xIntensity,float p_yIntensity);
+	void applyWave(float p_xIntensity,float p_yIntensity, float p_xFrequency, float p_yFrequency);
 	void applyGaussianBlur(float xSize, float ySize);
 	/// <summary>
 	/// apply a random noise filter
