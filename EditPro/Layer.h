@@ -34,6 +34,12 @@ public :
     //filters and effects
 	void applyWave(float p_xIntensity,float p_yIntensity);
 	void applyGaussianBlur(float xSize, float ySize);
+	/// <summary>
+	/// apply a random noise filter
+	/// </summary>
+	/// <param name="p_intensity">the noise intesity ranging from 0 to 100 (100 fills the whole image with noise)</param>
+	/// <param name="p_opacity"> the noise opacity ranging from 0 to 255 where 0 is fully transparent</param>
+	void applyRandomNoise(int p_intensity,int p_opacity);
 
 private :
 	cv::Mat m_renderedImage;

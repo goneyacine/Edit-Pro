@@ -37,6 +37,9 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
+
+	applyWave(0, 100);
+	applyRandomNoise(10,100);
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -112,4 +115,43 @@ void Layer::applyGaussianBlur(float xSize, float ySize)
 	 //I need to improve this later
 	cv::Mat temp = m_renderedImage.clone();
 	cv::GaussianBlur(temp, m_renderedImage, cv::Size(xSize, ySize),5,0);
+}
+
+void Layer::applyRandomNoise(int p_intensity,int p_opacity)
+{
+	srand(time(0));
+
+
+	//checking that all the parameters are in the range
+	if (p_intensity > 100)
+		p_intensity = 100;
+	else if (p_intensity < 0)
+		p_intensity = 0;
+    
+	if (p_opacity > 255)
+		p_opacity = 255;
+	else if (p_opacity < 0)
+		p_opacity = 0;
+
+	cv::Vec3b* pixelPtr;
+	//the probability of noise to be applied to a pixel 
+	float noiseProbability = (float)p_intensity / 100;
+	for (int y = 0; y < m_renderedImage.rows; y++)
+	{
+		for (int x = 0; x < m_renderedImage.cols; x++)
+		{
+			//checking if we should apply noise or not
+			if (((float)rand() / (float)RAND_MAX) > noiseProbability)
+				continue;
+
+
+			pixelPtr = &m_renderedImage.at<cv::Vec3b>(y, x);
+			//applying noise 
+            (* pixelPtr)[0] += ((float)p_opacity / 255) *((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[0]);
+            (* pixelPtr)[1] += ((float)p_opacity / 255) *((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[2]);
+            (* pixelPtr)[2] += ((float)p_opacity / 255) *((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[1]);
+
+
+		}
+	}
 }
