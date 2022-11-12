@@ -79,6 +79,9 @@
     <ClCompile Include="Vector2.cpp">
       <Filter>Source Files\Vectors</Filter>
     </ClCompile>
+    <ClCompile Include="EffectsGUIManager.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -98,6 +101,9 @@
     </QtMoc>
     <QtMoc Include="Manager.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="EffectsGUIManager.h">
+      <Filter>Header Files\UI</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -94,6 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EffectsGUIManager.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <QtRcc Include="MainWindow.qrc" />
@@ -118,6 +119,7 @@
   <ItemGroup>
     <ClInclude Include="ColorConvension.h" />
     <QtMoc Include="Manager.h" />
+    <QtMoc Include="EffectsGUIManager.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vectors.h" />
     <QtMoc Include="EPProject.h" />

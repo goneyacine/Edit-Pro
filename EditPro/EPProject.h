@@ -24,6 +24,7 @@ public:
 	void importToCurrentLayer(cv::Mat p_img);
 	std::vector<Layer*>* getLayers();
 	void createEmptyLayer();
+	Layer* getSelectedLayer();
 signals:
 	void layersUpdated();
 public slots:
@@ -37,5 +38,5 @@ private :
 	cv::Mat m_renderedImage;
 	std::vector<Layer*> m_layers;
 	EP::Vector2 m_size;
-	int m_currentLayer = -1;
+	int m_selectedLayerIndex = -1;
 };

@@ -71,17 +71,18 @@ void EPProject::importAsNewLayer(cv::Mat p_img)
 	newLayer->import(p_img);
 	m_layers.push_back(newLayer);
 
-	m_currentLayer = m_layers.size() -1 ; 
+	m_selectedLayerIndex = m_layers.size() -1 ; 
 	render();
 	emit layersUpdated();
 }
 
 void EPProject::importToCurrentLayer(cv::Mat p_img)
 {
-	if (m_currentLayer < 0 || m_layers.size() == 0)
+	if (m_selectedLayerIndex < 0 || m_layers.size() == 0)
 		return;
 
-	m_layers.at(m_currentLayer)->import(p_img);
+	m_layers.at(m_selectedLayerIndex)->import(p_img);
+	m_selectedLayerIndex = m_layers.size() - 1;
 	render();
 	emit layersUpdated();
 }
@@ -156,6 +157,12 @@ void EPProject::deleteLayer(Layer* p_layer)
 		}
 	}
 	render();
+
+	if (m_layers.size() == 0)
+		m_selectedLayerIndex = -1;
+	else
+		m_selectedLayerIndex = 0;
+
 	emit layersUpdated();
 }
 
@@ -164,4 +171,12 @@ void EPProject::importFile(QString p_filePath)
 	importAsNewLayer(cv::imread(p_filePath.toStdString()));
 }
 
+
+Layer* EPProject::getSelectedLayer()
+{
+	if (m_selectedLayerIndex < 0)
+		return NULL;
+
+	return m_layers.at(m_selectedLayerIndex);
+}
 

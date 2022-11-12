@@ -85,7 +85,7 @@
            <number>1</number>
           </property>
           <item row="0" column="0">
-           <widget class="QTabWidget" name="tabWidget">
+           <widget class="QTabWidget" name="effects_tools_adjusmentsTabWidget">
             <property name="tabPosition">
              <enum>QTabWidget::West</enum>
             </property>
@@ -138,7 +138,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-150</y>
+                   <y>0</y>
                    <width>164</width>
                    <height>673</height>
                   </rect>
@@ -388,7 +388,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="leftWidgetShowHideButton" native="true">
+        <widget class="QWidget" name="widget" native="true">
          <property name="minimumSize">
           <size>
            <width>10</width>
@@ -418,7 +418,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="leftWidgetShowHideButton">
             <property name="minimumSize">
              <size>
               <width>15</width>
