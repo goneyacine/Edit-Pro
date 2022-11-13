@@ -76,7 +76,13 @@ void Layer::setVisible(bool p_visible)
 {
 	m_isVisible = p_visible;
 }
-
+/// <summary>
+/// applys a wave effect to the layer, currently it uses sin function, maybe we need to add more function later 
+/// </summary>
+/// <param name="p_xIntensity"> wave size on the horizontal axis</param>
+/// <param name="p_yIntensity"> wave size on the vertical axis</param>
+/// <param name="p_xFrequency"> wave frequency on the horizontal axis (how many times the wave is repeated)</param>
+/// <param name="p_yFrequency"> wave frequency on the vertical axis (how many times the wave is repeated)</param>
 void Layer::applyWave(float p_xIntensity, float p_yIntensity,float p_xFrequency,float p_yFrequency)
 {
 

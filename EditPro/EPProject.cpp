@@ -43,6 +43,7 @@ void EPProject::render()
 
 	for (auto layer : m_layers)
 	{
+		//if the layer is not visible (disabled) then we don't render it
 		if (!layer->isVisible())
 			continue;
 
@@ -59,12 +60,17 @@ void EPProject::render()
 		}
 	}
    
+	//updating the render image
 	m_renderedImage = tempImg.clone();
 
+	//refreshing the canvas
 	m_canvas->updateCanvas(m_renderedImage);
 }
 
-
+/// <summary>
+/// imports an image to a new layer
+/// </summary>
+/// <param name="p_img"></param>
 void EPProject::importAsNewLayer(cv::Mat p_img)
 {
 	Layer* newLayer = new Layer(m_size.x, m_size.y);
@@ -75,7 +81,10 @@ void EPProject::importAsNewLayer(cv::Mat p_img)
 	render();
 	emit layersUpdated();
 }
-
+/// <summary>
+/// imports a layer to current selected file
+/// </summary>
+/// <param name="p_img"></param>
 void EPProject::importToCurrentLayer(cv::Mat p_img)
 {
 	if (m_selectedLayerIndex < 0 || m_layers.size() == 0)
@@ -91,7 +100,6 @@ std::vector<Layer*>* EPProject::getLayers()
 {
 	return &m_layers;
 }
-
 
 void EPProject::layerUp(Layer* p_layer)
 {
@@ -148,14 +156,17 @@ void EPProject::createEmptyLayer()
 }
 void EPProject::deleteLayer(Layer* p_layer)
 {
+	//itreating through layer to find the target layer
 	for (int i = 0; i < m_layers.size(); i++)
 	{
 		if (p_layer == m_layers.at(i))
 		{
+			//removing the layer from the layers vector and deleting it from the memory
 			m_layers.erase(m_layers.begin() + i);
 			delete p_layer;
 		}
 	}
+	//calling the render function to renfresh the canvas
 	render();
 
 	if (m_layers.size() == 0)
