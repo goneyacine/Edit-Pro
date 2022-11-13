@@ -83,20 +83,22 @@ void Layer::setVisible(bool p_visible)
 /// <param name="p_yIntensity"> wave size on the vertical axis</param>
 /// <param name="p_xFrequency"> wave frequency on the horizontal axis (how many times the wave is repeated)</param>
 /// <param name="p_yFrequency"> wave frequency on the vertical axis (how many times the wave is repeated)</param>
-void Layer::applyWave(float p_xIntensity, float p_yIntensity,float p_xFrequency,float p_yFrequency)
+void Layer::applyWave(float p_xIntensity, float p_yIntensity, float p_xFrequency, float p_yFrequency)
 {
 
-	int newX, newY;
+	int newX, newY, xOffset, yOffset;
 
 	cv::Mat tempImg(cv::Size(m_width, m_height), CV_8UC3, cv::Scalar(255, 255, 255));
 
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
+		xOffset = (sin((float)y / (float)m_renderedImage.rows * 2 * PI_NUM * p_xFrequency) * p_xIntensity);
 
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			newY = y + (sin((float)x / (float)m_renderedImage.cols * 2 * PI_NUM * p_yFrequency) * p_yIntensity);
-			newX = x + (sin((float)y / (float)m_renderedImage.rows * 2 * PI_NUM * p_xFrequency) * p_xIntensity);
+			yOffset = (sin((float)x / (float)m_renderedImage.cols * 2 * PI_NUM * p_yFrequency) * p_yIntensity);
+			newY = y + yOffset;
+			newX = x + xOffset;
 
 
 			if (newX >= m_width || newY >= m_height || newX < 0 || newY < 0)
