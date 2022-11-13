@@ -46,6 +46,8 @@ public :
 	/// <param name="p_slope">it should be greater than zero, and the default value is 1</param>
 	void adjustContrast(float p_slope);
 
+	void adjustExposure(float p_x);
+
 private :
 	cv::Mat m_renderedImage;
 	int m_width, m_height;

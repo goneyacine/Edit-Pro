@@ -35,7 +35,8 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
-	adjustContrast(1.4);
+	//adjustContrast(1.4);
+	adjustExposure(2);
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -203,6 +204,44 @@ void Layer::adjustContrast(float p_slope)
 			(*pixel)[1] = green;
 			(*pixel)[0] = blue;
 		
+		}
+	}
+}
+
+void Layer::adjustExposure(float p_x)
+{
+	cv::Vec3b* pixel;
+	float red, green, blue;
+	for (int y = 0; y < m_renderedImage.rows; y++)
+	{
+		for (int x = 0; x < m_renderedImage.cols; x++)
+		{
+			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
+
+			red = pow(2, p_x) * (*pixel)[2];
+			green = pow(2, p_x) * (*pixel)[1];
+			blue = pow(2, p_x) * (*pixel)[0];
+
+			if (red > 255)
+				red = 255;
+			else if (red < 0)
+				red = 0;
+
+			if (green > 255)
+				green = 255;
+			else if (red < 0)
+				green = 0;
+
+			if (blue > 255)
+				blue = 255;
+			else if (blue < 0)
+				blue = 0;
+
+
+
+			(*pixel)[2] = red;
+			(*pixel)[1] = green;
+			(*pixel)[0] = blue;
 		}
 	}
 }
