@@ -40,6 +40,11 @@ public :
 	/// <param name="p_intensity">the noise intesity ranging from 0 to 100 (100 fills the whole image with noise)</param>
 	/// <param name="p_opacity"> the noise opacity ranging from 0 to 255 where 0 is fully transparent</param>
 	void applyRandomNoise(int p_intensity,int p_opacity);
+	/// <summary>
+	/// adjusts image contrast
+	/// </summary>
+	/// <param name="p_slope">it should be greater than zero, and the default value is 1</param>
+	void adjustContrast(float p_slope);
 
 private :
 	cv::Mat m_renderedImage;

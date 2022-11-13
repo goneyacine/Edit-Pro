@@ -35,6 +35,7 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
+	adjustContrast(1.4);
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -153,6 +154,55 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 			(*pixelPtr)[0] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[0]);
 			(*pixelPtr)[1] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[2]);
 			(*pixelPtr)[2] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[1]);
+		}
+	}
+}
+
+
+//TODO : applying smoothing function
+void Layer::adjustContrast(float p_slope)
+{
+	if (p_slope == 1)
+		return;
+	else if (p_slope <= 0)
+		p_slope = .01;
+
+
+	cv::Vec3b* pixel;
+	float red, green, blue;
+
+	for (int y = 0; y < m_renderedImage.rows; y++)
+	{
+		for (int x = 0; x < m_renderedImage.cols; x++)
+		{
+			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
+
+			//applying the slope
+			red = p_slope * (*pixel)[2];
+			green = p_slope * (*pixel)[1];
+			blue = p_slope * (*pixel)[0];
+
+			if (red > 255)
+				red = 255;
+			else if (red < 0)
+				red = 0;
+
+			if (green > 255)
+				green = 255;
+			else if (red < 0)
+				green = 0;
+
+			if (blue > 255)
+				blue = 255;
+			else if (blue < 0)
+				blue = 0;
+
+			
+			
+			(*pixel)[2] = red;
+			(*pixel)[1] = green;
+			(*pixel)[0] = blue;
+		
 		}
 	}
 }
