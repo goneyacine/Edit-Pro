@@ -1,5 +1,5 @@
 #include "Layer.h"
-
+#include "EppMath.h"
 
 #define PI_NUM 3.14159265358979323846 /*the constant number pi*/
 
@@ -36,7 +36,7 @@ void Layer::import(cv::Mat p_img)
 		}
 	}
 	//adjustContrast(1.4);
-	adjustExposure(2);
+	adjustContrast(1.3);
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -160,7 +160,6 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 }
 
 
-//TODO : applying smoothing function
 void Layer::adjustContrast(float p_slope)
 {
 	if (p_slope == 1)
@@ -183,26 +182,10 @@ void Layer::adjustContrast(float p_slope)
 			green = p_slope * (*pixel)[1];
 			blue = p_slope * (*pixel)[0];
 
-			if (red > 255)
-				red = 255;
-			else if (red < 0)
-				red = 0;
-
-			if (green > 255)
-				green = 255;
-			else if (red < 0)
-				green = 0;
-
-			if (blue > 255)
-				blue = 255;
-			else if (blue < 0)
-				blue = 0;
-
-			
-			
-			(*pixel)[2] = red;
-			(*pixel)[1] = green;
-			(*pixel)[0] = blue;
+		    //applying sigmoid function to smooth the results
+			(*pixel)[2] = EppMath::sigmoidSmooth(red,6,0,255);
+			(*pixel)[1] = EppMath::sigmoidSmooth(green,6,0,255);
+			(*pixel)[0] = EppMath::sigmoidSmooth(blue,6,0,255);
 		
 		}
 	}

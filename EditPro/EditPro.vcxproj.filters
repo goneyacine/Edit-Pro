@@ -82,6 +82,9 @@
     <ClCompile Include="EffectsGUIManager.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="EppMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="Vectors.h">
       <Filter>Header Files\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="EppMath.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
