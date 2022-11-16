@@ -163,7 +163,7 @@ void Layer::adjustContrast(float p_slope)
 	if (p_slope == 1)
 		return;
 	else if (p_slope <= 0)
-		p_slope = .01;
+		p_slope = .001;
 
 
 	cv::Vec3b* pixel;
