@@ -48,6 +48,18 @@ public :
 
 	void adjustExposure(float p_x);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="p_adjustmentFactor"></param>
+	/// <param name="p_channel"> 1 for hue, 2 for saturation, 3 for value</param>
+	void adjustHSV(float p_adjustmentFactor, int p_channel);
+
+
+	void adjustHue(float p_adjustmentFactor);
+	void adjustSaturation(float p_adjustmentFactor);
+	void adjustValue(float p_adjustmentFactor);
+
 private :
 	cv::Mat m_renderedImage;
 	int m_width, m_height;

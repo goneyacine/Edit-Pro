@@ -35,8 +35,6 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
-	//adjustContrast(1.4);
-	adjustContrast(1.3);
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -178,15 +176,15 @@ void Layer::adjustContrast(float p_slope)
 			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
 
 			//applying the slope
-			red = p_slope * (*pixel)[2];
-			green = p_slope * (*pixel)[1];
-			blue = p_slope * (*pixel)[0];
+			red = p_slope * (float)(*pixel)[2];
+			green = p_slope * (float)(*pixel)[1];
+			blue = p_slope * (float)(*pixel)[0];
 
-		    //applying sigmoid function to smooth the results
-			(*pixel)[2] = EppMath::sigmoidSmooth(red,6,0,255);
-			(*pixel)[1] = EppMath::sigmoidSmooth(green,6,0,255);
-			(*pixel)[0] = EppMath::sigmoidSmooth(blue,6,0,255);
-		
+			//applying sigmoid function to smooth the results
+			(*pixel)[2] = EppMath::sigmoidSmooth(red, 6, 0, 255);
+			(*pixel)[1] = EppMath::sigmoidSmooth(green, 6, 0, 255);
+			(*pixel)[0] = EppMath::sigmoidSmooth(blue, 6, 0, 255);
+
 		}
 	}
 }
@@ -227,4 +225,43 @@ void Layer::adjustExposure(float p_x)
 			(*pixel)[0] = blue;
 		}
 	}
+}
+
+void Layer::adjustHSV(float p_adjustmentFactor, int p_channel)
+{
+	//note : opencv hsv range is 0-180 / 0-255 / 0-255
+	if (p_channel < 1)
+		p_channel = 1;
+	else if (p_channel > 3)
+		p_channel = 3;
+
+	cv::Mat tempHSVBuffer;
+
+	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
+
+	for (int y = 0; y < tempHSVBuffer.rows; y++)
+	{
+		for (int x = 0; x < tempHSVBuffer.cols; x++)
+		{
+			tempHSVBuffer.at<cv::Vec3b>(y, x)[p_channel - 1] = std::powf(tempHSVBuffer.at<cv::Vec3b>(y,x)[p_channel - 1],p_adjustmentFactor);
+		}
+	}
+
+	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
+
+}
+
+void Layer::adjustHue(float p_adjustmentFactor)
+{
+	adjustHSV(p_adjustmentFactor, 1);
+}
+
+void Layer::adjustSaturation(float p_adjustmentFactor)
+{
+	adjustHSV(p_adjustmentFactor, 2);
+}
+
+void Layer::adjustValue(float p_adjustmentFactor)
+{
+	adjustHSV(p_adjustmentFactor, 3);
 }
