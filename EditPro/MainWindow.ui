@@ -414,6 +414,13 @@
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <widget class="QPushButton" name="applyContrastButton">
+                   <property name="text">
+                    <string>Apply</string>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
               </item>
@@ -443,6 +450,13 @@
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="applyExposureButton">
+                   <property name="text">
+                    <string>Apply</string>
                    </property>
                   </widget>
                  </item>
@@ -531,6 +545,13 @@
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="applyHSVButton">
+                   <property name="text">
+                    <string>Apply</string>
                    </property>
                   </widget>
                  </item>

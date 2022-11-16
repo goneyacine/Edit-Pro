@@ -5,6 +5,7 @@
 #include "Vectors.h"
 #include "MainWindow.h"
 #include "EffectsGUIManager.h"
+#include "AdjustmentsGUIManager.h"
 /// <summary>
 /// The Manager class works like a linker that links between logic side and gui side
 /// </summary>
@@ -22,6 +23,7 @@ private :
 	LayersGUIManager* m_layersGUIManager;
 	EPProject* m_epproject;
 	EffectsGUIManager* m_effectsGUIManager;
+	AdjustmentsGUIManager* m_adjustmentsGUIManager;
 	EP::Vector2 m_size;
 
 };

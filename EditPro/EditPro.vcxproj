@@ -94,6 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AdjustmentsGUIManager.cpp" />
     <ClCompile Include="EffectsGUIManager.cpp" />
     <ClCompile Include="EppMath.cpp" />
     <ClCompile Include="Manager.cpp" />
@@ -118,6 +119,7 @@
     <ResourceCompile Include="EditPro.rc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AdjustmentsGUIManager.h" />
     <ClInclude Include="ColorConvension.h" />
     <QtMoc Include="Manager.h" />
     <QtMoc Include="EffectsGUIManager.h" />
