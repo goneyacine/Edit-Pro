@@ -28,21 +28,21 @@ AdjustmentsGUIManager::~AdjustmentsGUIManager()
 
 void AdjustmentsGUIManager::adjustContrast()
 {
-	m_epproject->getSelectedLayer()->adjustContrast((float)m_contrastSlider->value() / 100);
+	m_epproject->getSelectedLayer()->adjustContrast(m_contrastSlider->value());
 	m_epproject->render();
 }
 
 void AdjustmentsGUIManager::adjustExposure()
 {
-	m_epproject->getSelectedLayer()->adjustExposure((float)m_exposureSlider->value() / 100);
+	m_epproject->getSelectedLayer()->adjustExposure(m_exposureSlider->value());
 	m_epproject->render();
 }
 
 void AdjustmentsGUIManager::adjustHSV()
 {
-	m_epproject->getSelectedLayer()->adjustHue((float)m_hueSlider->value() / 1000);
-	m_epproject->getSelectedLayer()->adjustSaturation((float)m_saturationSlider->value() / 1000);
-	m_epproject->getSelectedLayer()->adjustValue((float)m_valueSlider->value() / 1000);
+	m_epproject->getSelectedLayer()->adjustHue(m_hueSlider->value());
+	m_epproject->getSelectedLayer()->adjustSaturation(m_saturationSlider->value());
+	m_epproject->getSelectedLayer()->adjustValue(m_valueSlider->value());
 	m_epproject->render();
 }
 

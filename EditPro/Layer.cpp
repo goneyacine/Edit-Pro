@@ -227,15 +227,65 @@ void Layer::adjustExposure(float p_x)
 	}
 }
 
-void Layer::adjustHSV(float p_adjustmentFactor, int p_channel)
-{
-	//note : opencv hsv range is 0-180 / 0-255 / 0-255
-	if (p_channel < 1)
-		p_channel = 1;
-	else if (p_channel > 3)
-		p_channel = 3;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="p_adjustmentFactor">adjustment factor should be between 0 and 360</param>
+void Layer::adjustHue(float p_adjustmentFactor)
+{
 	cv::Mat tempHSVBuffer;
+
+
+	cv::Vec3b* pixel;
+
+
+	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
+	for (int y = 0; y < m_renderedImage.rows; y++)
+	{
+		for(int x = 0;x < m_renderedImage.cols;x++)
+		{
+			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
+
+			(*pixel)[0] += (p_adjustmentFactor) / 2;
+
+			if ((*pixel)[0] > 180)
+				(*pixel)[0] = 180 - (*pixel)[0];
+		}
+	}
+	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
+}
+
+void Layer::adjustSaturation(float p_adjustmentFactor)
+{
+	cv::Mat tempHSVBuffer;
+
+	cv::Vec3b* pixel;
+    
+	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
+
+	for (int y = 0; y < tempHSVBuffer.rows; y++)
+	{
+		for (int x = 0; x < tempHSVBuffer.cols; x++)
+		{
+			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
+
+			(*pixel)[1] = std::powf((*pixel)[1],p_adjustmentFactor / 1000);
+
+			if ((*pixel)[1] > 255)
+				(*pixel)[1] = 255;
+			else if ((*pixel)[1] < 0)
+				(*pixel)[1] = 0;
+		}
+	}
+	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
+}
+
+void Layer::adjustValue(float p_adjustmentFactor)
+{
+	cv::Mat tempHSVBuffer;
+
+	cv::Vec3b* pixel;
 
 	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
 
@@ -243,25 +293,15 @@ void Layer::adjustHSV(float p_adjustmentFactor, int p_channel)
 	{
 		for (int x = 0; x < tempHSVBuffer.cols; x++)
 		{
-			tempHSVBuffer.at<cv::Vec3b>(y, x)[p_channel - 1] = std::powf(tempHSVBuffer.at<cv::Vec3b>(y,x)[p_channel - 1],p_adjustmentFactor);
+			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
+
+			(*pixel)[2] = std::powf((*pixel)[2],p_adjustmentFactor / 1000);
+
+			if ((*pixel)[2] > 255)
+				(*pixel)[2] = 255;
+			else if ((*pixel)[2] < 0)
+				(*pixel)[2] = 0;
 		}
 	}
-
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
-
-}
-
-void Layer::adjustHue(float p_adjustmentFactor)
-{
-	adjustHSV(p_adjustmentFactor, 1);
-}
-
-void Layer::adjustSaturation(float p_adjustmentFactor)
-{
-	adjustHSV(p_adjustmentFactor, 2);
-}
-
-void Layer::adjustValue(float p_adjustmentFactor)
-{
-	adjustHSV(p_adjustmentFactor, 3);
 }

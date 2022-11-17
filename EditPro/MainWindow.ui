@@ -489,13 +489,13 @@
                  <item>
                   <widget class="QSlider" name="hueSlider">
                    <property name="minimum">
-                    <number>1</number>
+                    <number>0</number>
                    </property>
                    <property name="maximum">
-                    <number>2000</number>
+                    <number>360</number>
                    </property>
                    <property name="value">
-                    <number>1000</number>
+                    <number>0</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -512,10 +512,10 @@
                  <item>
                   <widget class="QSlider" name="saturationSlider">
                    <property name="minimum">
-                    <number>1</number>
+                    <number>500</number>
                    </property>
                    <property name="maximum">
-                    <number>2000</number>
+                    <number>1500</number>
                    </property>
                    <property name="value">
                     <number>1000</number>
@@ -535,10 +535,10 @@
                  <item>
                   <widget class="QSlider" name="valueSlider">
                    <property name="minimum">
-                    <number>1</number>
+                    <number>500</number>
                    </property>
                    <property name="maximum">
-                    <number>2000</number>
+                    <number>1500</number>
                    </property>
                    <property name="value">
                     <number>1000</number>
