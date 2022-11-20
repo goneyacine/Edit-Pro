@@ -305,13 +305,14 @@ void Layer::adjustValue(float p_adjustmentFactor)
 		for (int x = 0; x < tempHSVBuffer.cols; x++)
 		{
 			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
-
-			(*pixel)[2] = std::powf((*pixel)[2],p_adjustmentFactor / 1000);
-
-			if ((*pixel)[2] > 255)
-				(*pixel)[2] = 255;
-			else if ((*pixel)[2] < 0)
-				(*pixel)[2] = 0;
+			if (p_adjustmentFactor > 0)
+			{
+				(*pixel)[2] += (255 - (*pixel)[2]) * p_adjustmentFactor / 100;
+			}
+			else
+			{
+				(*pixel)[2] += (*pixel)[2] * p_adjustmentFactor / 100;
+			}
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
