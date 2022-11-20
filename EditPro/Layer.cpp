@@ -231,11 +231,17 @@ void Layer::adjustExposure(float p_x)
 /// <summary>
 /// 
 /// </summary>
-/// <param name="p_adjustmentFactor">adjustment factor should be between 0 and 360</param>
+/// <param name="p_adjustmentFactor">adjustment factor should be between -180 and 180</param>
 void Layer::adjustHue(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
+
+	if (p_adjustmentFactor < -180)
+		p_adjustmentFactor = -180;
+	else if (p_adjustmentFactor > 180)
+		p_adjustmentFactor = 180;
+
 
 	cv::Mat tempHSVBuffer;
 
@@ -246,14 +252,16 @@ void Layer::adjustHue(float p_adjustmentFactor)
 	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
-		for(int x = 0;x < m_renderedImage.cols;x++)
+		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
 			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
 
 			(*pixel)[0] += (p_adjustmentFactor) / 2;
 
 			if ((*pixel)[0] > 180)
-				(*pixel)[0] = 180 - (*pixel)[0];
+				(*pixel)[0] = (*pixel)[0] - 180;
+			else if ((*pixel)[0] < 0)
+				(*pixel)[0] = 180 + (*pixel)[0];
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
@@ -263,6 +271,11 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
+
+	if (p_adjustmentFactor < -100)
+		p_adjustmentFactor = -100;
+	else if (p_adjustmentFactor > 100)
+		p_adjustmentFactor = 100;
 
 	cv::Mat tempHSVBuffer;
 
@@ -293,6 +306,11 @@ void Layer::adjustValue(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
+
+	if (p_adjustmentFactor < -100)
+		p_adjustmentFactor = -100;
+	else if (p_adjustmentFactor > 100)
+		p_adjustmentFactor = 100;
 
 	cv::Mat tempHSVBuffer;
 

@@ -139,7 +139,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>149</width>
+                   <width>164</width>
                    <height>673</height>
                   </rect>
                  </property>
@@ -489,10 +489,10 @@
                  <item>
                   <widget class="QSlider" name="hueSlider">
                    <property name="minimum">
-                    <number>0</number>
+                    <number>-180</number>
                    </property>
                    <property name="maximum">
-                    <number>360</number>
+                    <number>180</number>
                    </property>
                    <property name="value">
                     <number>0</number>
