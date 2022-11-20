@@ -139,7 +139,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>164</width>
+                   <width>149</width>
                    <height>673</height>
                   </rect>
                  </property>
@@ -512,13 +512,13 @@
                  <item>
                   <widget class="QSlider" name="saturationSlider">
                    <property name="minimum">
-                    <number>500</number>
+                    <number>-100</number>
                    </property>
                    <property name="maximum">
-                    <number>1500</number>
+                    <number>100</number>
                    </property>
                    <property name="value">
-                    <number>1000</number>
+                    <number>0</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -535,13 +535,13 @@
                  <item>
                   <widget class="QSlider" name="valueSlider">
                    <property name="minimum">
-                    <number>500</number>
+                    <number>-100</number>
                    </property>
                    <property name="maximum">
-                    <number>1500</number>
+                    <number>100</number>
                    </property>
                    <property name="value">
-                    <number>1000</number>
+                    <number>0</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
