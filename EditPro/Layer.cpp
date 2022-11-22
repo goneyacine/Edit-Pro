@@ -158,75 +158,127 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 }
 
 
-void Layer::adjustContrast(float p_slope)
+void Layer::adjustContrast(float p_adjustmentFactor)
 {
-	if (p_slope == 1)
+	if (p_adjustmentFactor == 0)
 		return;
-	else if (p_slope <= 0)
-		p_slope = .001;
+	else if (p_adjustmentFactor > 100)
+		p_adjustmentFactor = 100;
+	else if (p_adjustmentFactor < 0)
+		p_adjustmentFactor = 0;
 
 
-	cv::Vec3b* pixel;
-	float red, green, blue;
+	//calculating the min and max values for the original image
 
+
+	unsigned int oldMin = - 1;
+	unsigned int oldMax = -1;
+
+	//these arrays store pixels count for each color value (from 0 to 255)
+	unsigned int pixelsCount[256] = {0};
+	//the grayscale version of the original image
+	cv::Mat grayScaleImage;
+	cv::cvtColor(m_renderedImage, grayScaleImage, cv::COLOR_BGR2GRAY);
+	//counting pixels count
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
 
-			//applying the slope
-			red = p_slope * (float)(*pixel)[2];
-			green = p_slope * (float)(*pixel)[1];
-			blue = p_slope * (float)(*pixel)[0];
-
-			//applying sigmoid function to smooth the results
-			(*pixel)[2] = EppMath::sigmoidSmooth(red, 6, 0, 255);
-			(*pixel)[1] = EppMath::sigmoidSmooth(green, 6, 0, 255);
-			(*pixel)[0] = EppMath::sigmoidSmooth(blue, 6, 0, 255);
+			//increasing the pixels count valuesl 
+			pixelsCount[grayScaleImage.at<uchar>(y, x)]++;
 
 		}
 	}
-}
 
-void Layer::adjustExposure(float p_x)
-{
-	cv::Vec3b* pixel;
-	float red, green, blue;
+
+	//we find the min and max values by finding the min and max values that have specific pixel number count (in percent %)
+	//we do this to prevent extreme pixel values from effecting the adjustment too much
+
+	//if the min or max value have more than 3% of pixels count it could be considered as min or max value, if not then it couldn't
+
+	//first we try to find the min
+	for (int i = 0; i <= 255; i++)
+	{
+		//checking the min value 
+		if (pixelsCount[i] >= m_renderedImage.rows * m_renderedImage.cols * .05  && oldMin == -1)
+		{
+			oldMin = i;
+		}
+	}
+
+	//second we try to find the max 
+	for (int i = 255; i >= 0; i--)
+	{
+		//checking the max value 
+		if (pixelsCount[i] >= m_renderedImage.rows * m_renderedImage.cols * .05 && oldMax == -1)
+		{
+			int j = m_renderedImage.rows * m_renderedImage.cols * .03;
+			oldMax = i;
+		}
+	}
+
+
+
+    //calculating the new min and max red,green and blue values
+	
+	//here and before calculating the new min and max values we're checking the old min and max values are valid 
+	//if they're not valid then the new min and max values are not too
+
+	unsigned int newMin = oldMin >= 0 ? oldMin + (p_adjustmentFactor / 100 * oldMin) : -1;
+
+
+
+	unsigned int newMax = oldMax >= 0 ? oldMax + ((255 - oldMax) * p_adjustmentFactor / 100) : -1;
+
+
+	//calculating the slopes and offsets that will be used later for calculating the rgb values
+	//here also we're doing a quick check that the min and max values are valid (new or old ones it's the samething)
+	//if they are not valid then the slope is gonna be 1 (default value which means there is no change)
+	float slope = (newMax >= 0 && newMin >= 0) ? (float)(newMax - newMin) / (float)(oldMax - oldMin) : 1;
+	float offset = newMax >= 0 ? (float)newMax - slope * oldMax : 0;
+
+	cv::Vec3b* tempPixel;
+	unsigned int newRed, newGreen, newBlue;
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
+			tempPixel = &m_renderedImage.at<cv::Vec3b>(y, x);
 
-			red = pow(2, p_x) * (*pixel)[2];
-			green = pow(2, p_x) * (*pixel)[1];
-			blue = pow(2, p_x) * (*pixel)[0];
-
-			if (red > 255)
-				red = 255;
-			else if (red < 0)
-				red = 0;
-
-			if (green > 255)
-				green = 255;
-			else if (red < 0)
-				green = 0;
-
-			if (blue > 255)
-				blue = 255;
-			else if (blue < 0)
-				blue = 0;
+			newBlue = slope * (*tempPixel)[0] + offset;
+			newGreen = slope * (*tempPixel)[1] + offset;
+			newRed = slope * (*tempPixel)[2] + offset;
 
 
+			//I'm doing this to make sure that the color values are in the range (between 0 and 255)
 
-			(*pixel)[2] = red;
-			(*pixel)[1] = green;
-			(*pixel)[0] = blue;
+			if (newBlue > 255)
+				(*tempPixel)[0] = 255;
+			else if (newBlue < 0)
+				(*tempPixel)[0] = 0;
+			else
+				(*tempPixel)[0] = newBlue;
+
+
+			if (newGreen > 255)
+				(*tempPixel)[1] = 255;
+			else if (newGreen < 0)
+				(*tempPixel)[1] = 0;
+			else
+				(*tempPixel)[1] = newGreen;
+
+			if (newRed > 255)
+				(*tempPixel)[2] = 255;
+			else if (newRed < 0)
+				(*tempPixel)[2] = 0;
+			else
+				(*tempPixel)[2] = newRed;
 		}
 	}
-}
 
+
+}
 
 /// <summary>
 /// 
@@ -236,8 +288,7 @@ void Layer::adjustHue(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-
-	if (p_adjustmentFactor < -180)
+	else if (p_adjustmentFactor < -180)
 		p_adjustmentFactor = -180;
 	else if (p_adjustmentFactor > 180)
 		p_adjustmentFactor = 180;
@@ -271,8 +322,7 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-
-	if (p_adjustmentFactor < -100)
+	else if (p_adjustmentFactor < -100)
 		p_adjustmentFactor = -100;
 	else if (p_adjustmentFactor > 100)
 		p_adjustmentFactor = 100;
@@ -280,7 +330,7 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 	cv::Mat tempHSVBuffer;
 
 	cv::Vec3b* pixel;
-    
+
 	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
 
 	for (int y = 0; y < tempHSVBuffer.rows; y++)
@@ -306,8 +356,7 @@ void Layer::adjustValue(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-
-	if (p_adjustmentFactor < -100)
+	else if (p_adjustmentFactor < -100)
 		p_adjustmentFactor = -100;
 	else if (p_adjustmentFactor > 100)
 		p_adjustmentFactor = 100;

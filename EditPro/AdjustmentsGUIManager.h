@@ -13,7 +13,6 @@ public :
 
 public slots:
 	void adjustContrast();
-	void adjustExposure();
 	void adjustHSV();
 
 
@@ -22,7 +21,6 @@ private:
 	EPProject* m_epproject;
 
 	QSlider* m_contrastSlider;
-	QSlider* m_exposureSlider;
 	QSlider* m_hueSlider;
 	QSlider* m_saturationSlider;
 	QSlider* m_valueSlider;

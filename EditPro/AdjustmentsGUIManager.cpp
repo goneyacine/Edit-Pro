@@ -10,13 +10,11 @@ AdjustmentsGUIManager::AdjustmentsGUIManager(EPProject* p_epproject, MainWindow*
 
 	
 	m_contrastSlider = p_mainWindow->getUI()->contrastSlider;
-	m_exposureSlider = p_mainWindow->getUI()->exposureSlider;
 	m_hueSlider = p_mainWindow->getUI()->hueSlider;
 	m_saturationSlider = p_mainWindow->getUI()->saturationSlider;
 	m_valueSlider = p_mainWindow->getUI()->valueSlider;
 
 	connect(p_mainWindow->getUI()->applyContrastButton, &QPushButton::clicked, this, &AdjustmentsGUIManager::adjustContrast);
-	connect(p_mainWindow->getUI()->applyExposureButton, &QPushButton::clicked, this, &AdjustmentsGUIManager::adjustExposure);
 	connect(p_mainWindow->getUI()->applyHSVButton, &QPushButton::clicked, this, &AdjustmentsGUIManager::adjustHSV);
 }
 
@@ -29,12 +27,6 @@ AdjustmentsGUIManager::~AdjustmentsGUIManager()
 void AdjustmentsGUIManager::adjustContrast()
 {
 	m_epproject->getSelectedLayer()->adjustContrast(m_contrastSlider->value());
-	m_epproject->render();
-}
-
-void AdjustmentsGUIManager::adjustExposure()
-{
-	m_epproject->getSelectedLayer()->adjustExposure(m_exposureSlider->value());
 	m_epproject->render();
 }
 
