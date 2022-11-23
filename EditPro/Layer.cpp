@@ -126,15 +126,11 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 
 
 	//checking that all the parameters are in the range
-	if (p_intensity > 100)
-		p_intensity = 100;
-	else if (p_intensity < 0)
-		p_intensity = 0;
+	p_opacity = p_opacity > 255 ? 255 : p_opacity;
+	p_opacity = p_opacity < 0 ? 0 : p_opacity;
 
-	if (p_opacity > 255)
-		p_opacity = 255;
-	else if (p_opacity < 0)
-		p_opacity = 0;
+	p_intensity = p_intensity > 100 ? 100 : p_intensity;
+	p_intensity = p_intensity < 0 ? 0 : p_intensity;
 
 	cv::Vec3b* pixelPtr;
 	//the probability of noise to be applied to a pixel 
@@ -157,53 +153,59 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 	}
 }
 
-
+//I need to improve this function and apply the cuffoff fraction and do some refactoring later :)
+//don't forget to do that XD
+// I hate bugs
 void Layer::adjustContrast(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-	else if (p_adjustmentFactor > 100)
-		p_adjustmentFactor = 100;
-	else if (p_adjustmentFactor < 0)
-		p_adjustmentFactor = 0;
+	
+
+	p_adjustmentFactor = p_adjustmentFactor > 100 ? 100 : p_adjustmentFactor;
+	p_adjustmentFactor = p_adjustmentFactor < 0 ? 0 : p_adjustmentFactor;
 
 
 	//calculating the min and max values for the original image
 
 
-	unsigned int oldMin = - 1;
-	unsigned int oldMax = -1;
+	unsigned int min = - 1;
+	unsigned int max = -1;
 
-	//these arrays store pixels count for each color value (from 0 to 255)
+	//these arrays store pixels count for each color intensity value (from 0 to 255)
 	unsigned int pixelsCount[256] = {0};
-	//the grayscale version of the original image
-	cv::Mat grayScaleImage;
-	cv::cvtColor(m_renderedImage, grayScaleImage, cv::COLOR_BGR2GRAY);
 	//counting pixels count
+	cv::Vec3b pixel;
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-
+			pixel = m_renderedImage.at<cv::Vec3b>(y, x);
 			//increasing the pixels count valuesl 
-			pixelsCount[grayScaleImage.at<uchar>(y, x)]++;
+			pixelsCount[(pixel[0] + pixel[1] + pixel[2]) / 3]++;
 
 		}
 	}
 
+	//the intensity value that has the highest pixels count (the most common pixel value)
+	unsigned int commonIntensity = 0;
+	for (int i = 0; i < 256; i++)
+	{
+		if (pixelsCount[i] > pixelsCount[commonIntensity])
+			commonIntensity = i;
+	}
 
 	//we find the min and max values by finding the min and max values that have specific pixel number count (in percent %)
 	//we do this to prevent extreme pixel values from effecting the adjustment too much
 
-	//if the min or max value have more than 3% of pixels count it could be considered as min or max value, if not then it couldn't
-
+	
 	//first we try to find the min
 	for (int i = 0; i <= 255; i++)
 	{
 		//checking the min value 
-		if (pixelsCount[i] >= m_renderedImage.rows * m_renderedImage.cols * .05  && oldMin == -1)
+		if (pixelsCount[i] >= pixelsCount[commonIntensity] / 5 && min == -1)
 		{
-			oldMin = i;
+			min = i;
 		}
 	}
 
@@ -211,69 +213,65 @@ void Layer::adjustContrast(float p_adjustmentFactor)
 	for (int i = 255; i >= 0; i--)
 	{
 		//checking the max value 
-		if (pixelsCount[i] >= m_renderedImage.rows * m_renderedImage.cols * .05 && oldMax == -1)
+		if (pixelsCount[i] >= pixelsCount[commonIntensity] / 5 && max == -1)
 		{
-			int j = m_renderedImage.rows * m_renderedImage.cols * .03;
-			oldMax = i;
+			max = i;
 		}
 	}
 
-
-
-    //calculating the new min and max red,green and blue values
-	
-	//here and before calculating the new min and max values we're checking the old min and max values are valid 
-	//if they're not valid then the new min and max values are not too
-
-	unsigned int newMin = oldMin >= 0 ? oldMin + (p_adjustmentFactor / 100 * oldMin) : -1;
-
-
-
-	unsigned int newMax = oldMax >= 0 ? oldMax + ((255 - oldMax) * p_adjustmentFactor / 100) : -1;
-
-
-	//calculating the slopes and offsets that will be used later for calculating the rgb values
-	//here also we're doing a quick check that the min and max values are valid (new or old ones it's the samething)
-	//if they are not valid then the slope is gonna be 1 (default value which means there is no change)
-	float slope = (newMax >= 0 && newMin >= 0) ? (float)(newMax - newMin) / (float)(oldMax - oldMin) : 1;
-	float offset = newMax >= 0 ? (float)newMax - slope * oldMax : 0;
+	if (max == -1 || min == -1)
+		return;
 
 	cv::Vec3b* tempPixel;
-	unsigned int newRed, newGreen, newBlue;
+	unsigned int r, g, b;
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
 			tempPixel = &m_renderedImage.at<cv::Vec3b>(y, x);
-
+			/*
 			newBlue = slope * (*tempPixel)[0] + offset;
 			newGreen = slope * (*tempPixel)[1] + offset;
 			newRed = slope * (*tempPixel)[2] + offset;
+			*/
 
+			r = (*tempPixel)[2];
+			g = (*tempPixel)[1];
+			b = (*tempPixel)[0];
+
+			/*
+			r += (r - (r - oldMin) * (255 / (oldMax - oldMin)))* (p_adjustmentFactor / 100);
+			g += (g - (g - oldMin) * (255 / (oldMax - oldMin))) * (p_adjustmentFactor / 100);
+			b += (b - (b - oldMin) * (255 / (oldMax - oldMin))) * (p_adjustmentFactor / 100);
+            */
+
+			r = (r - min) * (255 / (max - min));
+			g = (g - min) * (255 / (max - min));
+			b = (b - min) * (255 / (max - min));
 
 			//I'm doing this to make sure that the color values are in the range (between 0 and 255)
 
-			if (newBlue > 255)
+			if (b > 255)
 				(*tempPixel)[0] = 255;
-			else if (newBlue < 0)
+			else if (b < 0)
 				(*tempPixel)[0] = 0;
 			else
-				(*tempPixel)[0] = newBlue;
+				(*tempPixel)[0] = b;
 
 
-			if (newGreen > 255)
+			if (g > 255)
 				(*tempPixel)[1] = 255;
-			else if (newGreen < 0)
+			else if (g < 0)
 				(*tempPixel)[1] = 0;
 			else
-				(*tempPixel)[1] = newGreen;
+				(*tempPixel)[1] = g;
 
-			if (newRed > 255)
+			if (r > 255)
 				(*tempPixel)[2] = 255;
-			else if (newRed < 0)
+			else if (r < 0)
 				(*tempPixel)[2] = 0;
 			else
-				(*tempPixel)[2] = newRed;
+				(*tempPixel)[2] = r;
 		}
 	}
 
@@ -288,10 +286,9 @@ void Layer::adjustHue(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-	else if (p_adjustmentFactor < -180)
-		p_adjustmentFactor = -180;
-	else if (p_adjustmentFactor > 180)
-		p_adjustmentFactor = 180;
+	
+	p_adjustmentFactor = p_adjustmentFactor > 180 ? 180 : p_adjustmentFactor;
+	p_adjustmentFactor = p_adjustmentFactor < -180 ? -180 : p_adjustmentFactor;
 
 
 	cv::Mat tempHSVBuffer;
@@ -309,10 +306,9 @@ void Layer::adjustHue(float p_adjustmentFactor)
 
 			(*pixel)[0] += (p_adjustmentFactor) / 2;
 
-			if ((*pixel)[0] > 180)
-				(*pixel)[0] = (*pixel)[0] - 180;
-			else if ((*pixel)[0] < 0)
-				(*pixel)[0] = 180 + (*pixel)[0];
+			//checking that the hue value is in the range (0, 180)
+			(*pixel)[0] = (*pixel)[0] > 180 ? (*pixel)[0] - 180 : (*pixel)[0];
+		    (*pixel)[0] = (*pixel)[0] < 0 ? 180 + (*pixel)[0] : (*pixel)[0];
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
@@ -322,10 +318,9 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-	else if (p_adjustmentFactor < -100)
-		p_adjustmentFactor = -100;
-	else if (p_adjustmentFactor > 100)
-		p_adjustmentFactor = 100;
+
+	p_adjustmentFactor = p_adjustmentFactor > 100 ? 100 : p_adjustmentFactor;
+	p_adjustmentFactor = p_adjustmentFactor < -100 ? -100 : p_adjustmentFactor;
 
 	cv::Mat tempHSVBuffer;
 
@@ -340,13 +335,11 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
 
 			if (p_adjustmentFactor > 0)
-			{
 				(*pixel)[1] += (255 - (*pixel)[1]) * p_adjustmentFactor / 100;
-			}
 			else
-			{
 				(*pixel)[1] += (*pixel)[1] * p_adjustmentFactor / 100;
-			}
+
+
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
@@ -356,10 +349,9 @@ void Layer::adjustValue(float p_adjustmentFactor)
 {
 	if (p_adjustmentFactor == 0)
 		return;
-	else if (p_adjustmentFactor < -100)
-		p_adjustmentFactor = -100;
-	else if (p_adjustmentFactor > 100)
-		p_adjustmentFactor = 100;
+
+	p_adjustmentFactor = p_adjustmentFactor > 100 ? 100 : p_adjustmentFactor;
+	p_adjustmentFactor = p_adjustmentFactor < -100 ? -100 : p_adjustmentFactor;
 
 	cv::Mat tempHSVBuffer;
 
@@ -373,13 +365,10 @@ void Layer::adjustValue(float p_adjustmentFactor)
 		{
 			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
 			if (p_adjustmentFactor > 0)
-			{
 				(*pixel)[2] += (255 - (*pixel)[2]) * p_adjustmentFactor / 100;
-			}
 			else
-			{
 				(*pixel)[2] += (*pixel)[2] * p_adjustmentFactor / 100;
-			}
+
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
