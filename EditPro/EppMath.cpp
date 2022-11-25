@@ -14,3 +14,27 @@ double EppMath::sigmoidSmooth(double p_value, double p_smoothness, double p_min,
 	else
 		return output;
 }
+
+double EppMath::mean(std::vector<double> p_values)
+{
+	double mean = 0;
+	for (auto value : p_values)
+	{
+		mean += value;
+	}
+	mean = mean / p_values.size();
+
+	return mean;
+}
+
+double EppMath::stdDeviation(std::vector<double> p_values, double p_mean)
+{
+	double deviation = 0;
+	for (auto value : p_values)
+	{
+		deviation += std::pow(value - p_mean, 2);
+	}
+	deviation = deviation / p_values.size();
+
+	return deviation;
+}

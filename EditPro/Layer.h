@@ -41,11 +41,8 @@ public :
 	/// <param name="p_opacity"> the noise opacity ranging from 0 to 255 where 0 is fully transparent</param>
 	void applyRandomNoise(int p_intensity,int p_opacity);
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="p_adjustmentFactor">the adjustment factor should be between 0 and +100</param>
-	void adjustContrast(float p_adjustmentFactor);
+
+	void autoContrast();
 	
 
 	void adjustHue(float p_adjustmentFactor);

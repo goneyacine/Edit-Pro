@@ -153,129 +153,75 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 	}
 }
 
-//I need to improve this function and apply the cuffoff fraction and do some refactoring later :)
-//don't forget to do that XD
-// I hate bugs
-void Layer::adjustContrast(float p_adjustmentFactor)
+
+void Layer::autoContrast()
 {
-	if (p_adjustmentFactor == 0)
-		return;
-	
+	/*
+	we're using AGCIE algorithm for constrast adjustment.
+	we can Implement more algorithms later and give the user more control but for now we're using only AGCIE.
+	there is this great article about AGCIE : https://link.springer.com/article/10.1186/s13640-016-0138-1#Equ1
+	there is also this great github repository to learn more : https://github.com/dengyueyun666/Image-Contrast-Enhancement
+	*/
 
-	p_adjustmentFactor = p_adjustmentFactor > 100 ? 100 : p_adjustmentFactor;
-	p_adjustmentFactor = p_adjustmentFactor < 0 ? 0 : p_adjustmentFactor;
+	//converting the input image from rgb into hsv
+	cv::Mat tempHSV;
 
+	cv::cvtColor(m_renderedImage, tempHSV, cv::COLOR_BGR2HSV);
 
-	//calculating the min and max values for the original image
+	//the V channel values for the HSV image (but they are normlized to be between 0 and 1 instead of 0 and 255)
+	std::vector<double> VChannel(tempHSV.rows * tempHSV.cols);
 
-
-	unsigned int min = - 1;
-	unsigned int max = -1;
-
-	//these arrays store pixels count for each color intensity value (from 0 to 255)
-	unsigned int pixelsCount[256] = {0};
-	//counting pixels count
-	cv::Vec3b pixel;
-	for (int y = 0; y < m_renderedImage.rows; y++)
+	for (int y = 0; y < tempHSV.rows; y++)
 	{
-		for (int x = 0; x < m_renderedImage.cols; x++)
+		for (int x = 0; x < tempHSV.cols; x++)
 		{
-			pixel = m_renderedImage.at<cv::Vec3b>(y, x);
-			//increasing the pixels count valuesl 
-			pixelsCount[(pixel[0] + pixel[1] + pixel[2]) / 3]++;
-
+			VChannel[x * tempHSV.rows + y] = (double)tempHSV.at<cv::Vec3b>(y, x)[2] / 255;
 		}
 	}
 
-	//the intensity value that has the highest pixels count (the most common pixel value)
-	unsigned int commonIntensity = 0;
-	for (int i = 0; i < 256; i++)
+	double tau = 3.0;
+	//the average V value (between 0 and 1)
+	double mean = EppMath::mean(VChannel);
+	//the standard deviation 
+	double sigma = EppMath::stdDeviation(VChannel, mean);
+
+	double gamma;
+
+	if (4 * sigma < 1 / tau) //low contrast image
+		gamma = -std::log2(sigma);
+	else //higher contrast image
+		gamma = std::exp((1 - (mean + sigma)) / 2);
+
+
+	if (mean > 0.5) //bright image 
 	{
-		if (pixelsCount[i] > pixelsCount[commonIntensity])
-			commonIntensity = i;
+		for (int i = 0; i < VChannel.size(); i++)
+			VChannel[i] = std::pow(VChannel[i], gamma);
 	}
-
-	//we find the min and max values by finding the min and max values that have specific pixel number count (in percent %)
-	//we do this to prevent extreme pixel values from effecting the adjustment too much
-
-	
-	//first we try to find the min
-	for (int i = 0; i <= 255; i++)
+	else //dark image
 	{
-		//checking the min value 
-		if (pixelsCount[i] >= pixelsCount[commonIntensity] / 5 && min == -1)
+		//mean value to the power of gamma 
+		double gammaMean = std::pow(mean, gamma);
+
+		for (int i = 0; i < VChannel.size(); i++)
 		{
-			min = i;
+			//V value to the power of gamma
+			double gammaV = std::pow(VChannel[i], gamma);
+			VChannel[i] = gammaV / (gammaV + (1 - gammaV) * gammaMean);
 		}
 	}
 
-	//second we try to find the max 
-	for (int i = 255; i >= 0; i--)
+	//assinging the new V values to hsv image and then convert it again to rgb
+	for (int y = 0; y < tempHSV.rows; y++)
 	{
-		//checking the max value 
-		if (pixelsCount[i] >= pixelsCount[commonIntensity] / 5 && max == -1)
+		for (int x = 0; x < tempHSV.cols; x++)
 		{
-			max = i;
+
+			tempHSV.at<cv::Vec3b>(y, x)[2] = VChannel[x * tempHSV.rows + y] * 255;
 		}
 	}
 
-	if (max == -1 || min == -1)
-		return;
-
-	cv::Vec3b* tempPixel;
-	unsigned int r, g, b;
-	for (int y = 0; y < m_renderedImage.rows; y++)
-	{
-		for (int x = 0; x < m_renderedImage.cols; x++)
-		{
-			tempPixel = &m_renderedImage.at<cv::Vec3b>(y, x);
-			/*
-			newBlue = slope * (*tempPixel)[0] + offset;
-			newGreen = slope * (*tempPixel)[1] + offset;
-			newRed = slope * (*tempPixel)[2] + offset;
-			*/
-
-			r = (*tempPixel)[2];
-			g = (*tempPixel)[1];
-			b = (*tempPixel)[0];
-
-			/*
-			r += (r - (r - oldMin) * (255 / (oldMax - oldMin)))* (p_adjustmentFactor / 100);
-			g += (g - (g - oldMin) * (255 / (oldMax - oldMin))) * (p_adjustmentFactor / 100);
-			b += (b - (b - oldMin) * (255 / (oldMax - oldMin))) * (p_adjustmentFactor / 100);
-            */
-
-			r = (r - min) * (255 / (max - min));
-			g = (g - min) * (255 / (max - min));
-			b = (b - min) * (255 / (max - min));
-
-			//I'm doing this to make sure that the color values are in the range (between 0 and 255)
-
-			if (b > 255)
-				(*tempPixel)[0] = 255;
-			else if (b < 0)
-				(*tempPixel)[0] = 0;
-			else
-				(*tempPixel)[0] = b;
-
-
-			if (g > 255)
-				(*tempPixel)[1] = 255;
-			else if (g < 0)
-				(*tempPixel)[1] = 0;
-			else
-				(*tempPixel)[1] = g;
-
-			if (r > 255)
-				(*tempPixel)[2] = 255;
-			else if (r < 0)
-				(*tempPixel)[2] = 0;
-			else
-				(*tempPixel)[2] = r;
-		}
-	}
-
-
+	cv::cvtColor(tempHSV, m_renderedImage, cv::COLOR_HSV2BGR);
 }
 
 /// <summary>

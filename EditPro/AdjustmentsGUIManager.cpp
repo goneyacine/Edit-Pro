@@ -26,7 +26,7 @@ AdjustmentsGUIManager::~AdjustmentsGUIManager()
 
 void AdjustmentsGUIManager::adjustContrast()
 {
-	m_epproject->getSelectedLayer()->adjustContrast(m_contrastSlider->value());
+	m_epproject->getSelectedLayer()->autoContrast();
 	m_epproject->render();
 }
 
