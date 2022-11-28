@@ -123,6 +123,7 @@
     <ClInclude Include="ColorConvension.h" />
     <QtMoc Include="Manager.h" />
     <QtMoc Include="EffectsGUIManager.h" />
+    <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="EppMath.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vectors.h" />

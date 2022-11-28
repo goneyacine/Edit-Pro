@@ -2,7 +2,8 @@
 
 #include <opencv2/opencv.hpp>
 #include <qlayout.h>
-
+#include <chrono>
+#include <qdebug.h>
 CanvasView::CanvasView(QWidget* parent,int p_width,int p_height) : m_width(p_width),m_height(p_height)
 {
 	m_canvasImage = new QImage(m_width,m_height,QImage::Format_RGB888);
@@ -20,6 +21,8 @@ CanvasView::~CanvasView()
 }
 void CanvasView::updateCanvas(cv::Mat p_img)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	if(m_canvasImage == NULL)
 		m_canvasImage = new QImage(m_width, m_height, QImage::Format_RGB888);
 
@@ -45,16 +48,25 @@ void CanvasView::updateCanvas(cv::Mat p_img)
 	}
 	//calling update (it's a QWidget function) function to call paint event
 	update();
+
+    double functionDuration =  1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Update Canvas Toke " << functionDuration << "ms to colmplete";
 }
 
 
 void CanvasView::paintEvent(QPaintEvent* event)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
+
 	QPainter painter(this);
 	painter.fillRect(QRect(0, 0, width(), height()), QColor(80, 80, 80));
 	painter.drawImage(QRect(m_xOffset - (m_width / 2), m_yOffset - (m_height / 2),
 		m_width * ((float)m_zoom / 100), m_height * ((float)m_zoom / 100))
 		, *m_canvasImage);
+
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Canvas Paint Toke " << functionDuration << "ms to colmplete";
 }
 
 void CanvasView::mousePressEvent(QMouseEvent* event)

@@ -1,5 +1,6 @@
 #include "EPProject.h"
-
+#include <chrono>
+#include <qdebug.h>
 /// <summary>
 /// 
 /// </summary>
@@ -8,7 +9,7 @@ EPProject::EPProject(EP::Vector2 p_size)
 	: m_size(p_size)
 {
 	m_canvas = new CanvasView(NULL,m_size.x,m_size.y);
-
+	m_renderedImage = cv::Mat(cv::Size(m_size.x, m_size.y), CV_8UC3, cv::Scalar(255, 255, 255));
 	render();
 }
 EPProject::~EPProject()
@@ -38,30 +39,25 @@ void EPProject::render()
 	if (m_layers.size() == 0)
 		return;
 
-	//creating an empty white background
-	cv::Mat tempImg(cv::Size(m_size.x, m_size.y), CV_8UC3, cv::Scalar(255,255,255));
-
-	for (auto layer : m_layers)
+	
+	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
-		//if the layer is not visible (disabled) then we don't render it
-		if (!layer->isVisible())
-			continue;
-
-		for (int y = 0; y < layer->getRenderedImage().rows; y++)
+		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			if (y >= tempImg.rows)
-				continue;
-			for (int x = 0; x < layer->getRenderedImage().cols; x++)
+			m_renderedImage.at<cv::Vec3b>(y, x) = cv::Vec3b(255);
+			for (int i = m_layers.size() - 1; i >= 0;i--)
 			{
-				if (x >= tempImg.cols)
+				if (x < m_layers[i]->getRenderedImage().cols && y < m_layers[i]->getRenderedImage().rows)
+				{
+					m_renderedImage.at<cv::Vec3b>(y, x) = m_layers[i]->getRenderedImage().at<cv::Vec3b>(y, x);
+					break;
+				}
+				else
 					continue;
-				tempImg.at<cv::Vec3b>(y, x) = layer->getRenderedImage().at<cv::Vec3b>(y, x);
 			}
 		}
 	}
-   
-	//updating the render image
-	m_renderedImage = tempImg.clone();
+
 
 	//refreshing the canvas
 	m_canvas->updateCanvas(m_renderedImage);
@@ -156,6 +152,7 @@ void EPProject::createEmptyLayer()
 }
 void EPProject::deleteLayer(Layer* p_layer)
 {
+
 	//itreating through layer to find the target layer
 	for (int i = 0; i < m_layers.size(); i++)
 	{

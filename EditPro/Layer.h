@@ -2,9 +2,11 @@
 
 #include <opencv2/opencv.hpp>
 #include <qstring.h>
+#include <QtCore/qdebug.h>
 
-class Layer
+class Layer 
 {
+
 
 public :
 	Layer(int p_width, int p_height);

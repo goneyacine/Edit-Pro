@@ -33,6 +33,9 @@
     <Filter Include="Header Files\Vectors">
       <UniqueIdentifier>{e4ebcb8c-431c-4542-bdf7-d2cb2dd01f4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Debug">
+      <UniqueIdentifier>{d4134c14-3a3d-44d0-bd9a-73109f034491}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc">
@@ -119,9 +122,6 @@
     <ClInclude Include="ColorConvension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Header Files\Vectors</Filter>
     </ClInclude>
@@ -129,6 +129,12 @@
       <Filter>Header Files\Vectors</Filter>
     </ClInclude>
     <ClInclude Include="EppMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugTimer.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

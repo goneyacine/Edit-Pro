@@ -1,6 +1,6 @@
 #include "Layer.h"
 #include "EppMath.h"
-
+#include <chrono>
 #define PI_NUM 3.14159265358979323846 /*the constant number pi*/
 
 
@@ -22,6 +22,7 @@ Layer::Layer(int p_width, int p_height, QString p_name) : m_width(p_width), m_he
 //TODO : this function should reimplemented to later to support the alpha channel
 void Layer::import(cv::Mat p_img)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
 
 	for (int y = 0; y < p_img.rows; y++)
 	{
@@ -35,6 +36,8 @@ void Layer::import(cv::Mat p_img)
 			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
 		}
 	}
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Import Function Toke " << functionDuration << "ms to colmplete";
 }
 
 cv::Mat Layer::getRenderedImage()
@@ -85,6 +88,7 @@ void Layer::setVisible(bool p_visible)
 /// <param name="p_yFrequency"> wave frequency on the vertical axis (how many times the wave is repeated)</param>
 void Layer::applyWave(float p_xIntensity, float p_yIntensity, float p_xFrequency, float p_yFrequency)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
 
 	int newX, newY, xOffset, yOffset;
 
@@ -109,19 +113,28 @@ void Layer::applyWave(float p_xIntensity, float p_yIntensity, float p_xFrequency
 	}
 
 	m_renderedImage = tempImg.clone();
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Apply Wave Function Toke " << functionDuration << "ms to colmplete";
 }
 
 
 void Layer::applyGaussianBlur(float xSize, float ySize)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	//TODO : find a max value for the blur size
 	 //I need to improve this later
 	cv::Mat temp = m_renderedImage.clone();
 	cv::GaussianBlur(temp, m_renderedImage, cv::Size(xSize, ySize), 5, 0);
+
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Apply Gaussian Blur Function Toke " << functionDuration << "ms to colmplete";
 }
 
 void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	srand(time(0));
 
 
@@ -132,9 +145,10 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 	p_intensity = p_intensity > 100 ? 100 : p_intensity;
 	p_intensity = p_intensity < 0 ? 0 : p_intensity;
 
-	cv::Vec3b* pixelPtr;
+	cv::Vec3b* pixel;
 	//the probability of noise to be applied to a pixel 
 	float noiseProbability = (float)p_intensity / 100;
+
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
@@ -143,19 +157,24 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 			if (((float)rand() / (float)RAND_MAX) > noiseProbability)
 				continue;
 
+            ;
 
-			pixelPtr = &m_renderedImage.at<cv::Vec3b>(y, x);
+			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
 			//applying noise 
-			(*pixelPtr)[0] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[0]);
-			(*pixelPtr)[1] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[2]);
-			(*pixelPtr)[2] += ((float)p_opacity / 255) * ((float)rand() / (float)RAND_MAX) * (255 - (*pixelPtr)[1]);
+			(*pixel)[0] +=  ((float)rand() / (float)RAND_MAX) * ((float)p_opacity / 255) * (255 - (*pixel)[0]);
+			(*pixel)[1] +=  ((float)rand() / (float)RAND_MAX) * ((float)p_opacity / 255) * (255 - (*pixel)[2]);
+			(*pixel)[2] +=  ((float)rand() / (float)RAND_MAX) * ((float)p_opacity / 255) * (255 - (*pixel)[1]);
 		}
 	}
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Random Noise Function Toke " << functionDuration << "ms to colmplete";
 }
 
 
 void Layer::autoContrast()
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	/*
 	we're using AGCIE algorithm for constrast adjustment.
 	we can Implement more algorithms later and give the user more control but for now we're using only AGCIE.
@@ -202,7 +221,6 @@ void Layer::autoContrast()
 	{
 		//mean value to the power of gamma 
 		double gammaMean = std::pow(mean, gamma);
-
 		for (int i = 0; i < VChannel.size(); i++)
 		{
 			//V value to the power of gamma
@@ -222,6 +240,8 @@ void Layer::autoContrast()
 	}
 
 	cv::cvtColor(tempHSV, m_renderedImage, cv::COLOR_HSV2BGR);
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Auto Contrast Function Toke " << functionDuration << "ms to colmplete";
 }
 
 /// <summary>
@@ -230,6 +250,8 @@ void Layer::autoContrast()
 /// <param name="p_adjustmentFactor">adjustment factor should be between -180 and 180</param>
 void Layer::adjustHue(float p_adjustmentFactor)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	if (p_adjustmentFactor == 0)
 		return;
 	
@@ -258,10 +280,14 @@ void Layer::adjustHue(float p_adjustmentFactor)
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Adjust Hue Function Toke " << functionDuration << "ms to colmplete";
 }
 
 void Layer::adjustSaturation(float p_adjustmentFactor)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	if (p_adjustmentFactor == 0)
 		return;
 
@@ -289,10 +315,14 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
+	double functionDuration = 1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Adjust Saturation Function Toke " << functionDuration << "ms to colmplete";
 }
 
 void Layer::adjustValue(float p_adjustmentFactor)
 {
+	auto startTime = std::chrono::high_resolution_clock::now();
+
 	if (p_adjustmentFactor == 0)
 		return;
 
@@ -318,4 +348,6 @@ void Layer::adjustValue(float p_adjustmentFactor)
 		}
 	}
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
+	double functionDuration =  1000 * std::chrono::duration<double>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime)).count();
+	qDebug() << "Adjust Value Function Toke " << functionDuration << "ms to colmplete";
 }
