@@ -98,7 +98,10 @@
     <ClCompile Include="EffectsGUIManager.cpp" />
     <ClCompile Include="EppMath.cpp" />
     <ClCompile Include="Manager.cpp" />
-    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="PaintTool.cpp" />
+    <ClCompile Include="Tool.cpp" />
+    <ClCompile Include="ToolsManager.cpp" />
+    <ClCompile Include="Vectors.cpp" />
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="MainWindow.ui" />
     <QtMoc Include="MainWindow.h" />
@@ -120,12 +123,14 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="AdjustmentsGUIManager.h" />
-    <ClInclude Include="ColorConvension.h" />
+    <ClInclude Include="Brush.h" />
     <QtMoc Include="Manager.h" />
     <QtMoc Include="EffectsGUIManager.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="EppMath.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="PaintTool.h" />
+    <ClInclude Include="Tool.h" />
+    <ClInclude Include="ToolsManager.h" />
     <ClInclude Include="Vectors.h" />
     <QtMoc Include="EPProject.h" />
     <QtMoc Include="CanvasView.h" />

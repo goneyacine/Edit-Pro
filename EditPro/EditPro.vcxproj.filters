@@ -36,6 +36,15 @@
     <Filter Include="Header Files\Debug">
       <UniqueIdentifier>{d4134c14-3a3d-44d0-bd9a-73109f034491}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{4b064dcd-4ca9-4486-abce-858df17c0a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{86078741-03f5-4f93-be7f-bf2158b27838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\brushs">
+      <UniqueIdentifier>{2703da6f-f6e9-4c3f-b5e0-873acf7865e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc">
@@ -79,7 +88,7 @@
     <ClCompile Include="Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
+    <ClCompile Include="Vectors.cpp">
       <Filter>Source Files\Vectors</Filter>
     </ClCompile>
     <ClCompile Include="EffectsGUIManager.cpp">
@@ -90,6 +99,15 @@
     </ClCompile>
     <ClCompile Include="AdjustmentsGUIManager.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="PaintTool.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolsManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,12 +137,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ColorConvension.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Header Files\Vectors</Filter>
-    </ClInclude>
     <ClInclude Include="Vectors.h">
       <Filter>Header Files\Vectors</Filter>
     </ClInclude>
@@ -135,6 +147,18 @@
       <Filter>Header Files\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Brush.h">
+      <Filter>Header Files\brushs</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintTool.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,10 +6,12 @@
 #include "MainWindow.h"
 #include "EffectsGUIManager.h"
 #include "AdjustmentsGUIManager.h"
+#include "ToolsManager.h"
+
 /// <summary>
 /// The Manager class works like a linker that links between logic side and gui side
 /// </summary>
-class Manager : QObject
+class Manager : public QObject
 {
 	Q_OBJECT
 public :
@@ -19,8 +21,14 @@ public :
 	LayersGUIManager* getLayersGUIManager();
 	EPProject* getEPProject();
 
+private slots:
+	void onCanvasMousePress(QMouseEvent* event);
+	void onCanvasMouseRelease(QMouseEvent* event);
+	void onCanvasMouseDrag(QMouseEvent* event);
+	void onCanvasMouseWheel(QWheelEvent* event);
 private :
 	LayersGUIManager* m_layersGUIManager;
+	ToolsManager* m_toolsManager;
 	EPProject* m_epproject;
 	EffectsGUIManager* m_effectsGUIManager;
 	AdjustmentsGUIManager* m_adjustmentsGUIManager;

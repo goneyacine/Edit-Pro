@@ -3,7 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <qstring.h>
 #include <QtCore/qdebug.h>
-
+#include "Vectors.h"
 class Layer 
 {
 
@@ -46,7 +46,7 @@ public :
 
 	void autoContrast();
 	
-
+	void setPixel(int p_x,int p_y,EP::Vector3 p_rgb);
 	void adjustHue(float p_adjustmentFactor);
 	void adjustSaturation(float p_adjustmentFactor);
 	void adjustValue(float p_adjustmentFactor);
