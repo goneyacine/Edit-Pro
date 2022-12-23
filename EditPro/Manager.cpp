@@ -50,8 +50,13 @@ void Manager::onCanvasMousePress(QMouseEvent* event)
 	{
 		m_toolsManager->getSelectedTool()->onMousePress
 		(event, EP::Vector2(
-			(QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100),
-			(QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100)));
+			/*
+			(float)((QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset)) / ((float)m_epproject->getCanvasView()->g_zoom / 100) ,
+			(float)((QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset)) / ((float)m_epproject->getCanvasView()->g_zoom / 100) )
+			*/
+			(m_epproject->getCanvasView()->mapFromGlobal(QCursor::pos()).x() - (m_epproject->getCanvasView()->g_xOffset * ((float)m_epproject->getCanvasView()->g_zoom / 100))) / ((float)m_epproject->getCanvasView()->g_zoom / 100),
+			(m_epproject->getCanvasView()->mapFromGlobal(QCursor::pos()).y() - (m_epproject->getCanvasView()->g_yOffset * ((float)m_epproject->getCanvasView()->g_zoom / 100))) / ((float)m_epproject->getCanvasView()->g_zoom / 100)
+		));
 	}
 }
 void Manager::onCanvasMouseRelease(QMouseEvent* event)
@@ -60,8 +65,13 @@ void Manager::onCanvasMouseRelease(QMouseEvent* event)
 	{
 		m_toolsManager->getSelectedTool()->onMouseRelease
 		(event, EP::Vector2(
-			(QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100),
-			(QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100)));
+			/*
+			(float)((QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset)) / ((float)m_epproject->getCanvasView()->g_zoom / 100) ,
+			(float)((QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset)) / ((float)m_epproject->getCanvasView()->g_zoom / 100) )
+			*/
+			(m_epproject->getCanvasView()->mapFromGlobal(QCursor::pos()).x() - (m_epproject->getCanvasView()->g_xOffset * ((float)m_epproject->getCanvasView()->g_zoom / 100))) / ((float)m_epproject->getCanvasView()->g_zoom / 100),
+			(m_epproject->getCanvasView()->mapFromGlobal(QCursor::pos()).y() - (m_epproject->getCanvasView()->g_yOffset * ((float)m_epproject->getCanvasView()->g_zoom / 100))) / ((float)m_epproject->getCanvasView()->g_zoom / 100)
+		));
 	}
 }
 

@@ -18,6 +18,7 @@ PaintTool::~PaintTool()
 
 }
 
+//this function should take the cursor position as an input to solve the problem of skiping the paint points
 void PaintTool::onMouseDrag(QMouseEvent* p_event,EP::Vector2 p_mouseRelativePosition)
 {
 	paint(p_mouseRelativePosition);
@@ -25,7 +26,7 @@ void PaintTool::onMouseDrag(QMouseEvent* p_event,EP::Vector2 p_mouseRelativePosi
 
 void PaintTool::onMousePress(QMouseEvent* p_event,EP::Vector2 p_mouseRelativePosition)
 {
-
+	paint(p_mouseRelativePosition);
 }
 
 void PaintTool::onMouseRelease(QMouseEvent* p_event, EP::Vector2 p_mouseRelativePosition)
