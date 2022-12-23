@@ -10,8 +10,10 @@ CanvasView::CanvasView(QWidget* parent, int p_width, int p_height) :
 	m_canvasImage = new QImage(m_width,m_height,QImage::Format_RGB888);
 	m_canvasImage->fill(Qt::black);
 	setMouseTracking(true);
-	g_xOffset = this->width() / 2;
-	g_yOffset = this->height() / 2;
+//	g_xOffset = this->width() / 2;
+	g_xOffset = 0;
+	//g_yOffset = this->height() / 2;
+	g_yOffset = 0;
 }
 
 
@@ -63,7 +65,7 @@ void CanvasView::paintEvent(QPaintEvent* event)
 
 	QPainter painter(this);
 	painter.fillRect(QRect(0, 0, width(), height()), QColor(80, 80, 80));
-	painter.drawImage(QRect(g_xOffset - (m_width / 2), g_yOffset - (m_height / 2),
+	painter.drawImage(QRect((g_xOffset * ((float)g_zoom / 100)), (g_yOffset * ((float)g_zoom / 100)) ,
 		m_width * ((float)g_zoom / 100), m_height * ((float)g_zoom / 100))
 		, *m_canvasImage);
 
@@ -107,8 +109,8 @@ void CanvasView::mouseMoveEvent(QMouseEvent* event)
 {
 	if (m_mouseRightButtonIsPressed)
 	{
-		g_xOffset += (QCursor::pos().x() - old_cursor_x);
-		g_yOffset += (QCursor::pos().y() - old_cursor_y);
+		g_xOffset += (QCursor::pos().x() - old_cursor_x) / ((float)g_zoom / 100);
+		g_yOffset += (QCursor::pos().y() - old_cursor_y) / ((float)g_zoom / 100);
 
 		old_cursor_x = QCursor::pos().x();
 		old_cursor_y = QCursor::pos().y();

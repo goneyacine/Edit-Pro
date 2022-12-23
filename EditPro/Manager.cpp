@@ -46,21 +46,41 @@ EPProject* Manager::getEPProject()
 
 void Manager::onCanvasMousePress(QMouseEvent* event)
 {
-	qDebug() << "Mouse Press Test Is Working";
+	if (event->button() == Qt::LeftButton)
+	{
+		m_toolsManager->getSelectedTool()->onMousePress
+		(event, EP::Vector2(
+			(QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100),
+			(QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100)));
+	}
 }
-
 void Manager::onCanvasMouseRelease(QMouseEvent* event)
 {
-	qDebug() << "Mouse Release Test Is Working";
+	if (event->button() == Qt::LeftButton)
+	{
+		m_toolsManager->getSelectedTool()->onMouseRelease
+		(event, EP::Vector2(
+			(QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100),
+			(QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset) * ((float)m_epproject->getCanvasView()->g_zoom / 100)));
+	}
 }
 
 void Manager::onCanvasMouseDrag(QMouseEvent* event)
 {
-	qDebug() << "Mouse Drag Test Is Working";
+
+	m_toolsManager->getSelectedTool()->onMouseDrag(
+		event, EP::Vector2(
+			/*
+			(float)((QCursor::pos().x() - m_epproject->getCanvasView()->g_xOffset)) / ((float)m_epproject->getCanvasView()->g_zoom / 100) ,
+			(float)((QCursor::pos().y() - m_epproject->getCanvasView()->g_yOffset)) / ((float)m_epproject->getCanvasView()->g_zoom / 100) )
+			*/
+			(m_epproject->getCanvasView()->mapFromGlobal(QCursor::pos()).x() - (m_epproject->getCanvasView()->g_xOffset * ((float)m_epproject->getCanvasView()->g_zoom / 100))) / ((float)m_epproject->getCanvasView()->g_zoom / 100),
+			(m_epproject->getCanvasView()->mapFromGlobal(QCursor::pos()).y() - (m_epproject->getCanvasView()->g_yOffset * ((float)m_epproject->getCanvasView()->g_zoom / 100))) / ((float)m_epproject->getCanvasView()->g_zoom / 100)
+		));
 }
 
 
 void Manager::onCanvasMouseWheel(QWheelEvent* event)
 {
-	qDebug() << "Mouse Wheel Test Is Working";
+	m_toolsManager->getSelectedTool()->onMouseWheel(event);
 }
