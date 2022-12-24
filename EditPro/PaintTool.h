@@ -17,6 +17,8 @@ public:
 	void onMousePress(QMouseEvent* p_event, EP::Vector2 p_mouseRelativePosition) override;
 	void onMouseRelease(QMouseEvent* p_event, EP::Vector2 p_mouseRelativePosition) override;
 	void onMouseWheel(QWheelEvent* p_event) override;
+	///RGB (not BGR)
+	EP::Vector3 g_paintColor;
 private:
 	void paint(EP::Vector2 p_paintPosition);
 	void loadBrushs();

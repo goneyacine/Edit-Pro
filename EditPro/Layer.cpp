@@ -7,7 +7,7 @@
 Layer::Layer(int p_width, int p_height) : m_width(p_width), m_height(p_height)
 {
 	//initializing the rendered image
-	m_renderedImage = cv::Mat::zeros(m_width, m_height, CV_8UC3);
+	m_renderedImage = cv::Mat::zeros(m_width, m_height, CV_8UC4);
 
 	m_name = "New_Layer";
 }
@@ -16,12 +16,19 @@ Layer::Layer(int p_width, int p_height) : m_width(p_width), m_height(p_height)
 Layer::Layer(int p_width, int p_height, QString p_name) : m_width(p_width), m_height(p_height), m_name(p_name)
 {
 	//initializing the rendered image
-	m_renderedImage = cv::Mat::zeros(m_width, m_height, CV_8UC3);
+	m_renderedImage = cv::Mat::zeros(m_width, m_height, CV_8UC4);
 }
 
 //TODO : this function should reimplemented to later to support the alpha channel
 void Layer::import(cv::Mat p_img)
 {
+	//Making sure that the loaded image is BGRA not BGR 
+	if (p_img.channels() == 3)
+	{
+		cv::Mat img = p_img.clone();
+		cv::cvtColor(p_img, img, cv::COLOR_BGR2BGRA);
+		p_img = img.clone();
+	}
 
 	for (int y = 0; y < p_img.rows; y++)
 	{
@@ -32,7 +39,7 @@ void Layer::import(cv::Mat p_img)
 			if (x >= m_height)
 				continue;
 
-			m_renderedImage.at<cv::Vec3b>(y, x) = p_img.at<cv::Vec3b>(y, x);
+			m_renderedImage.at<cv::Vec4b>(y, x) = p_img.at<cv::Vec4b>(y, x);
 		}
 	}
 }
@@ -88,7 +95,7 @@ void Layer::applyWave(float p_xIntensity, float p_yIntensity, float p_xFrequency
 
 	int newX, newY, xOffset, yOffset;
 
-	cv::Mat tempImg(cv::Size(m_width, m_height), CV_8UC3, cv::Scalar(255, 255, 255));
+	cv::Mat tempImg(cv::Size(m_width, m_height), CV_8UC4, cv::Scalar(255, 255, 255));
 
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
@@ -104,7 +111,7 @@ void Layer::applyWave(float p_xIntensity, float p_yIntensity, float p_xFrequency
 			if (newX >= m_width || newY >= m_height || newX < 0 || newY < 0)
 				continue;
 
-			tempImg.at<cv::Vec3b>(newY, newX) = m_renderedImage.at<cv::Vec3b>(y, x);
+			tempImg.at<cv::Vec4b>(newY, newX) = m_renderedImage.at<cv::Vec4b>(y, x);
 		}
 	}
 
@@ -135,7 +142,7 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 	p_intensity = p_intensity > 100 ? 100 : p_intensity;
 	p_intensity = p_intensity < 0 ? 0 : p_intensity;
 
-	cv::Vec3b* pixel;
+	cv::Vec4b* pixel;
 	//the probability of noise to be applied to a pixel 
 	float noiseProbability = (float)p_intensity / 100;
 
@@ -149,7 +156,7 @@ void Layer::applyRandomNoise(int p_intensity, int p_opacity)
 
             ;
 
-			pixel = &m_renderedImage.at<cv::Vec3b>(y, x);
+			pixel = &m_renderedImage.at<cv::Vec4b>(y, x);
 			//applying noise 
 			(*pixel)[0] +=  ((float)rand() / (float)RAND_MAX) * ((float)p_opacity / 255) * (255 - (*pixel)[0]);
 			(*pixel)[1] +=  ((float)rand() / (float)RAND_MAX) * ((float)p_opacity / 255) * (255 - (*pixel)[2]);
@@ -181,7 +188,7 @@ void Layer::autoContrast()
 	{
 		for (int x = 0; x < tempHSV.cols; x++)
 		{
-			VChannel[x * tempHSV.rows + y] = (double)tempHSV.at<cv::Vec3b>(y, x)[2] / 255;
+			VChannel[x * tempHSV.rows + y] = (double)tempHSV.at<cv::Vec4b>(y, x)[2] / 255;
 		}
 	}
 
@@ -222,7 +229,7 @@ void Layer::autoContrast()
 		for (int x = 0; x < tempHSV.cols; x++)
 		{
 
-			tempHSV.at<cv::Vec3b>(y, x)[2] = VChannel[x * tempHSV.rows + y] * 255;
+			tempHSV.at<cv::Vec4b>(y, x)[2] = VChannel[x * tempHSV.rows + y] * 255;
 		}
 	}
 
@@ -245,7 +252,7 @@ void Layer::adjustHue(float p_adjustmentFactor)
 	cv::Mat tempHSVBuffer;
 
 
-	cv::Vec3b* pixel;
+	cv::Vec4b* pixel;
 
 
 	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
@@ -253,7 +260,7 @@ void Layer::adjustHue(float p_adjustmentFactor)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
+			pixel = &tempHSVBuffer.at<cv::Vec4b>(y, x);
 
 			(*pixel)[0] += (p_adjustmentFactor) / 2;
 
@@ -276,7 +283,7 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 
 	cv::Mat tempHSVBuffer;
 
-	cv::Vec3b* pixel;
+	cv::Vec4b* pixel;
 
 	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
 
@@ -284,7 +291,7 @@ void Layer::adjustSaturation(float p_adjustmentFactor)
 	{
 		for (int x = 0; x < tempHSVBuffer.cols; x++)
 		{
-			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
+			pixel = &tempHSVBuffer.at<cv::Vec4b>(y, x);
 
 			if (p_adjustmentFactor > 0)
 				(*pixel)[1] += (255 - (*pixel)[1]) * p_adjustmentFactor / 100;
@@ -308,7 +315,7 @@ void Layer::adjustValue(float p_adjustmentFactor)
 
 	cv::Mat tempHSVBuffer;
 
-	cv::Vec3b* pixel;
+	cv::Vec4b* pixel;
 
 	cv::cvtColor(m_renderedImage, tempHSVBuffer, cv::COLOR_BGR2HSV);
 
@@ -316,7 +323,7 @@ void Layer::adjustValue(float p_adjustmentFactor)
 	{
 		for (int x = 0; x < tempHSVBuffer.cols; x++)
 		{
-			pixel = &tempHSVBuffer.at<cv::Vec3b>(y, x);
+			pixel = &tempHSVBuffer.at<cv::Vec4b>(y, x);
 			if (p_adjustmentFactor > 0)
 				(*pixel)[2] += (255 - (*pixel)[2]) * p_adjustmentFactor / 100;
 			else
@@ -327,7 +334,8 @@ void Layer::adjustValue(float p_adjustmentFactor)
 	cv::cvtColor(tempHSVBuffer, m_renderedImage, cv::COLOR_HSV2BGR);
 }
 
-void Layer::setPixel(int p_x, int p_y,EP::Vector3 p_rgb)
+
+void Layer::setPixel(int p_x, int p_y,EP::Vector4 p_rgba)
 {
-	m_renderedImage.at<cv::Vec3b>(p_y, p_x) = cv::Vec3b(p_rgb.z,p_rgb.y,p_rgb.x);
+	m_renderedImage.at<cv::Vec4b>(p_y, p_x) = cv::Vec4b(p_rgba.z, p_rgba.y, p_rgba.x, p_rgba.w);
 }

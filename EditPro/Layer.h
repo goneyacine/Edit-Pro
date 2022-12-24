@@ -46,7 +46,7 @@ public :
 
 	void autoContrast();
 	
-	void setPixel(int p_x,int p_y,EP::Vector3 p_rgb);
+	void setPixel(int p_x,int p_y,EP::Vector4 p_rgba);
 	void adjustHue(float p_adjustmentFactor);
 	void adjustSaturation(float p_adjustmentFactor);
 	void adjustValue(float p_adjustmentFactor);

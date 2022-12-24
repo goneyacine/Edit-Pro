@@ -39,13 +39,13 @@ void CanvasView::updateCanvas(cv::Mat p_img)
 
 
     //converting OpenCV Mat (p_img) into QImage (m_canvasImage) to be displayed in screen
-	cv::Vec3b color;
+	cv::Vec4b color;
 	QColor qcolor;
 	for (int y = 0; y < p_img.rows; y++)
 	{
 		for (int x = 0; x < p_img.cols; x++)
 		{
-			color = p_img.at<cv::Vec3b>(y, x);
+			color = p_img.at<cv::Vec4b>(y, x);
 
 			qcolor.setRgb(color[2], color[1], color[0]);
 

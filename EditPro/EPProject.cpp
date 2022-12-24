@@ -9,7 +9,7 @@ EPProject::EPProject(EP::Vector2 p_size)
 	: m_size(p_size)
 {
 	m_canvas = new CanvasView(NULL,m_size.x,m_size.y);
-	m_renderedImage = cv::Mat(cv::Size(m_size.x, m_size.y), CV_8UC3, cv::Scalar(255, 255, 255));
+	m_renderedImage = cv::Mat(cv::Size(m_size.x, m_size.y), CV_8UC4, cv::Scalar(255, 255, 255));
 	render();
 }
 EPProject::~EPProject()
@@ -44,12 +44,12 @@ void EPProject::render()
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			m_renderedImage.at<cv::Vec3b>(y, x) = cv::Vec3b(255);
+			m_renderedImage.at<cv::Vec4b>(y, x) = cv::Vec4b(255);
 			for (int i = m_layers.size() - 1; i >= 0;i--)
 			{
 				if (x < m_layers[i]->getRenderedImage().cols && y < m_layers[i]->getRenderedImage().rows)
 				{
-					m_renderedImage.at<cv::Vec3b>(y, x) = m_layers[i]->getRenderedImage().at<cv::Vec3b>(y, x);
+					m_renderedImage.at<cv::Vec4b>(y, x) = m_layers[i]->getRenderedImage().at<cv::Vec4b>(y, x);
 					break;
 				}
 				else
