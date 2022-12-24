@@ -9,7 +9,7 @@ EPProject::EPProject(EP::Vector2 p_size)
 	: m_size(p_size)
 {
 	m_canvas = new CanvasView(NULL,m_size.x,m_size.y);
-	m_renderedImage = cv::Mat(cv::Size(m_size.x, m_size.y), CV_8UC4, cv::Scalar(255, 255, 255));
+	m_renderedImage = cv::Mat(cv::Size(m_size.x, m_size.y), CV_8UC4, cv::Scalar(255, 255, 255,255));
 	render();
 }
 EPProject::~EPProject()
@@ -39,18 +39,39 @@ void EPProject::render()
 	if (m_layers.size() == 0)
 		return;
 
-	
+	//BGRA
+	cv::Vec4b newColor;
+	double newAlpha;
+	cv::Vec4b topPixel, buttomPixel;
 	for (int y = 0; y < m_renderedImage.rows; y++)
 	{
 		for (int x = 0; x < m_renderedImage.cols; x++)
 		{
-			m_renderedImage.at<cv::Vec4b>(y, x) = cv::Vec4b(255);
+			m_renderedImage.at<cv::Vec4b>(y, x) = cv::Vec4b(0,0,0,255);
 			for (int i = m_layers.size() - 1; i >= 0;i--)
 			{
 				if (x < m_layers[i]->getRenderedImage().cols && y < m_layers[i]->getRenderedImage().rows)
 				{
-					m_renderedImage.at<cv::Vec4b>(y, x) = m_layers[i]->getRenderedImage().at<cv::Vec4b>(y, x);
-					break;
+
+					buttomPixel = m_renderedImage.at<cv::Vec4b>(y, x);
+					topPixel = m_layers[i]->getRenderedImage().at<cv::Vec4b>(y, x);
+
+					newAlpha = topPixel[3] + buttomPixel[3] * (1 - (float)topPixel[3] / 255);
+
+					//the new blue value
+					newColor[0] = (topPixel[0] * topPixel[3] + buttomPixel[0] * buttomPixel[3] * (1 - (float)topPixel[3] / 255)) / newAlpha;
+
+					//the new green value
+					newColor[1] = (topPixel[1] * topPixel[3] + buttomPixel[1] * buttomPixel[3] * (1 - (float)topPixel[3] / 255)) / newAlpha;
+
+					//the new red value
+					newColor[2] = (topPixel[2] * topPixel[3] + buttomPixel[2] * buttomPixel[3] * (1 - (float)topPixel[3] / 255)) / newAlpha;
+
+					//the new alpha value
+					newColor[3] = newAlpha;
+
+
+					m_renderedImage.at<cv::Vec4b>(y, x) = newColor;
 				}
 				else
 					continue;
@@ -176,7 +197,7 @@ void EPProject::deleteLayer(Layer* p_layer)
 
 void EPProject::importFile(QString p_filePath)
 {
-	importAsNewLayer(cv::imread(p_filePath.toStdString()));
+	importAsNewLayer(cv::imread(p_filePath.toStdString(), cv::IMREAD_UNCHANGED));
 }
 
 
